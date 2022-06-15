@@ -1,8 +1,10 @@
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 const CreateTask = () => (
   <View>
-
+    <Text>
+      create Task
+    </Text>
   </View>
 )
 

@@ -16,8 +16,8 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
         },
       },
-      CreateTask: 'modal',
       NotFound: '*',
+      CreateTask: 'modal'
     },
   },
 };

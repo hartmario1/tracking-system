@@ -22,9 +22,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={{
-      
-    }}>
+    <Stack.Navigator>
       <Stack.Screen 
         name = "Root" 
         component = {HomeScreen}
@@ -63,6 +61,5 @@ const RootNavigator = () => {
     </Stack.Navigator>
   );
 }
-
 
 export default Navigation
