@@ -10,10 +10,10 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<'Home'>) => (
     <List />
     <View style = {{ width: '95%' }}>
       <TouchableOpacity
-        style = {styles.button}
+        style = {styles.addButton}
         onPress = {() => navigation.navigate('CreateTask')} >
           <Entypo name="plus" size={18} color="#fff" />
-          <Text style = {styles.text}>
+          <Text style = {styles.addButtonText}>
             Add New
           </Text>
       </TouchableOpacity>
@@ -28,14 +28,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff'
   },
-  button: {
+  addButton: {
     justifyContent: 'center',
     backgroundColor: "#5371ff",
     padding: 12,
     borderRadius: 50,
     flexDirection: 'row'
   },
-  text: {
+  addButtonText: {
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 15
