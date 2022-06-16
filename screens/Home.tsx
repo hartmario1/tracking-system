@@ -6,9 +6,11 @@ import { RootTabScreenProps } from "../types";
 
 const HomeScreen = ({ navigation }: RootTabScreenProps<'Home'>) => (
   <View style = {styles.container}>
-    <Clock />
+    <View style = {{ paddingVertical: 5 }}>
+      <Clock />
+    </View>
     <List />
-    <View style = {{ width: '95%' }}>
+    <View style = {{ width: '95%', paddingBottom: 10 }}>
       <TouchableOpacity
         style = {styles.addButton}
         onPress = {() => navigation.navigate('CreateTask')} >
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#5371ff",
     padding: 12,
     borderRadius: 50,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   addButtonText: {
     color: '#fff',
