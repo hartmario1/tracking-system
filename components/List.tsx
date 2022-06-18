@@ -4,7 +4,7 @@ import Task, { DATA } from "./Task";
 
 const List = () => {
   const renderItem = ({ item }: { item: any }) => (
-    <Task title = {item.title} start = {item.start} end = {item.end} />
+    <Task title = {item.title} start = {item.start} end = {item.end} type = {item.type} />
   );
 
   return (
@@ -23,18 +23,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingBottom: 10,
     width: '95%',
-  },
-  item: {
-    backgroundColor: '#E9EBF8',
-    padding: 10,
-    marginVertical: 3,
-    width: '100%',
-    borderRadius: 10
-    
-  },
-  title: {
-    fontSize: 15,
-  },
+  }
 });
 
 export default List;

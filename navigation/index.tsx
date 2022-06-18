@@ -32,7 +32,10 @@ const RootNavigator = () => {
             source={require('../assets/images/logo.png')} 
             style = {{ width: 250, height: 50 }} />
           ),
-          headerTitleAlign: 'center'
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#fff',
+          },
         })} />
       <Stack.Screen 
         name = "NotFound"
@@ -43,7 +46,10 @@ const RootNavigator = () => {
             source={require('../assets/images/logo.png')} 
             style = {{ width: 250, height: 50 }} />
           ),
-          headerTitleAlign: 'center'
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#fff',
+          }
         })} />
       <Stack.Group screenOptions = {{ presentation: 'containedTransparentModal' }}>
         <Stack.Screen 
@@ -55,7 +61,10 @@ const RootNavigator = () => {
               source={require('../assets/images/logo.png')} 
               style = {{ width: 250, height: 50 }} />
             ),
-            headerTitleAlign: 'center'
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#fff',
+            }
           })} />
       </Stack.Group>
     </Stack.Navigator>
