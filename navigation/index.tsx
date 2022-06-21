@@ -56,14 +56,13 @@ const RootNavigator = () => {
           name = "CreateTask"
           component={CreateTask}
           options = {() => ({
-            headerTitle: () => (
-              <Image 
-              source={require('../assets/images/logo.png')} 
-              style = {{ width: 250, height: 50 }} />
-            ),
+            headerTitle: 'Create new entry',
             headerTitleAlign: 'center',
             headerStyle: {
               backgroundColor: '#fff',
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
             }
           })} />
       </Stack.Group>
