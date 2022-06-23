@@ -63,6 +63,7 @@ const RootNavigator = () => {
             },
             headerTitleStyle: {
               fontWeight: 'bold',
+              color: '#000'
             }
           })} />
       </Stack.Group>

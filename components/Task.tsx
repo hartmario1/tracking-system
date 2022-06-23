@@ -41,14 +41,14 @@ const Task = ({ title, start, end, type }: { title: string, start: number, end: 
       </View>
     </View>
 
-    <View style = {styles.icons}>
-      <TouchableOpacity>
-        <Feather name="edit-2" size={19} color="#5371ff" />
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Feather name="trash-2" size={19} color="#B80600" />
-      </TouchableOpacity>
-    </View>
+      <View style = {styles.icons}>
+        <TouchableOpacity>
+          <Feather name="edit-2" size={19} color="#5371ff" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Feather name="trash-2" size={19} color="#B80600" />
+        </TouchableOpacity>
+      </View>
   </View>
 )
 
