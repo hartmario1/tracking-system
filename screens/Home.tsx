@@ -10,7 +10,7 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<'Home'>) => (
       animated = {true}
       backgroundColor = '#fff'
       barStyle = 'dark-content' />
-    <View style = {{ paddingVertical: 5 }}>
+    <View style = {{ paddingTop: 6 }}>
       <Clock />
     </View>
     <List />

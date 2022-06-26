@@ -62,8 +62,8 @@ const RootNavigator = () => {
               backgroundColor: '#fff',
             },
             headerTitleStyle: {
-              fontWeight: 'bold',
-              color: '#000'
+              color: '#000',
+              fontFamily: 'poppins'
             }
           })} />
       </Stack.Group>

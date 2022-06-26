@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Entypo } from '@expo/vector-icons'; 
+import { Entypo } from '@expo/vector-icons';
 
 const CreateTask = () => {
   const [startTime, onStartTimeChange] = useState('');
@@ -9,6 +9,7 @@ const CreateTask = () => {
 
   return (
     <SafeAreaView style = {styles.container}>
+
       <View style = {{ width: '95%' }}>
         <Text style = {styles.descriptionText}>
           Title
@@ -109,3 +110,9 @@ const styles = StyleSheet.create({
 })
 
 export default CreateTask;
+
+// fisier separat simulate backend cu lista de taskuri
+// creaza un serviciu de api una de GET - care sa aduca lista / POST - care sa adauge / DELETE, UPDATE(edit)
+// de descarcat POSTGRESQL
+// de adaugat java 17
+// de adaugat font si facut mai mare (data si ora)
