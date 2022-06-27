@@ -111,8 +111,4 @@ const styles = StyleSheet.create({
 
 export default CreateTask;
 
-// fisier separat simulate backend cu lista de taskuri
-// creaza un serviciu de api una de GET - care sa aduca lista / POST - care sa adauge / DELETE, UPDATE(edit)
 // de descarcat POSTGRESQL
-// de adaugat java 17
-// de adaugat font si facut mai mare (data si ora)
