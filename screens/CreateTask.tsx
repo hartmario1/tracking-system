@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Entypo } from '@expo/vector-icons';
+import { getEntries } from "../api/entries/get";
 
 const CreateTask = () => {
   const [startTime, onStartTimeChange] = useState('');
@@ -48,7 +49,8 @@ const CreateTask = () => {
 
       <View style = {{ width: '95%' }}>
         <TouchableOpacity
-          style = {styles.addEntry}>
+          style = {styles.addEntry}
+          onPress = {getEntries}>
             <Entypo name="plus" size={18} color="#fff" />
             <Text style = {styles.addEntryText}>
               Create new entry
