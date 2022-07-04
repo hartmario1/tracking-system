@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Entypo } from '@expo/vector-icons';
-import { getEntries } from "../api/entries/get";
+import { createEntry } from "../api/entries/post";
+import { RootTabScreenProps } from "../types";
 
-const CreateTask = () => {
+const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
   const [startTime, onStartTimeChange] = useState('');
   const [endTime, onEndTimeChange] = useState('');
   const [commit, onCommitChange] = useState('')
 
   return (
     <SafeAreaView style = {styles.container}>
-
+      
       <View style = {{ width: '95%' }}>
         <Text style = {styles.descriptionText}>
           Title
@@ -23,9 +24,45 @@ const CreateTask = () => {
       </View>
 
       <View style = {styles.timeRow}>
+        <View style = {{ width: '32%' }}>
+          <Text style = {styles.descriptionText}>
+            Day
+          </Text>
+          <TextInput
+            style={styles.timeInput}
+            onChangeText={onStartTimeChange}
+            value={startTime}
+            placeholder="Enter day"
+            keyboardType="numeric" />
+        </View>
+        <View style = {{ width: '32%' }}>
+          <Text style = {styles.descriptionText}>
+            Month
+          </Text>
+          <TextInput
+            style={styles.timeInput}
+            onChangeText={onStartTimeChange}
+            value={startTime}
+            placeholder="Enter month"
+            keyboardType="numeric" />
+        </View>
+        <View style = {{ width: '32%' }}>
+          <Text style = {styles.descriptionText}>
+            Year
+          </Text>
+          <TextInput
+          style={styles.timeInput}
+          onChangeText={onEndTimeChange}
+          value={endTime}
+          placeholder="Enter year"
+          keyboardType="numeric" />
+        </View>
+      </View>
+
+      <View style = {styles.timeRow}>
         <View style = {{ width: '48%' }}>
           <Text style = {styles.descriptionText}>
-            Started at:
+            Started at
           </Text>
           <TextInput
             style={styles.timeInput}
@@ -36,7 +73,7 @@ const CreateTask = () => {
         </View>
         <View style = {{ width: '48%' }}>
           <Text style = {styles.descriptionText}>
-            Ended at:
+            Ended at
           </Text>
           <TextInput
           style={styles.timeInput}
@@ -50,7 +87,10 @@ const CreateTask = () => {
       <View style = {{ width: '95%' }}>
         <TouchableOpacity
           style = {styles.addEntry}
-          onPress = {getEntries}>
+          onPress = {() => {
+              createEntry();
+              navigation.goBack();
+            }}>
             <Entypo name="plus" size={18} color="#fff" />
             <Text style = {styles.addEntryText}>
               Create new entry

@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     marginVertical: 3,
     width: '100%',
     borderRadius: 10,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   title: {
     fontSize: 15,
@@ -47,9 +47,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   icons: {
-    position: 'absolute',
-    right: 0,
-    paddingRight: 8,
+    flex: 1,
+    alignItems: 'flex-end'
   }
 })
 

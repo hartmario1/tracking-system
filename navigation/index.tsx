@@ -1,12 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { ColorSchemeName, Image } from "react-native";
+import { ColorSchemeName, Image, TouchableOpacity } from "react-native";
 import LinkingConfiguration from './LinkingConfiguration';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types";
+import { RootStackParamList, RootTabScreenProps } from "../types";
 import CreateTask from "../screens/CreateTask";
 import NotFoundScreen from "../screens/NotFound";
 import HomeScreen from "../screens/Home";
+
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
   return (
@@ -35,6 +38,7 @@ const RootNavigator = () => {
           headerTitleAlign: 'center',
           headerStyle: {
             backgroundColor: '#fff',
+            height: 70
           },
         })} />
       <Stack.Screen 
@@ -55,7 +59,7 @@ const RootNavigator = () => {
         <Stack.Screen 
           name = "CreateTask"
           component={CreateTask}
-          options = {() => ({
+          options = {({ navigation }: RootTabScreenProps<'CreateTask'>) => ({
             headerTitle: 'Create new entry',
             headerTitleAlign: 'center',
             headerStyle: {
@@ -64,7 +68,12 @@ const RootNavigator = () => {
             headerTitleStyle: {
               color: '#000',
               fontFamily: 'poppins'
-            }
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <MaterialIcons name="arrow-back" size={24} color="black" />
+              </TouchableOpacity>
+            )
           })} />
       </Stack.Group>
     </Stack.Navigator>

@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
-import { DATA } from "../api/entries";
+import { DATA } from "../api/entries/entries";
 import Task from "./Task";
 
 const List = () => {
@@ -13,8 +13,7 @@ const List = () => {
       <FlatList
         data = {DATA}
         renderItem = {renderItem}
-        keyExtractor = {item => item.id}
-      />
+        keyExtractor = {item => item.id} />
     </SafeAreaView>
   )
 }
