@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { ColorSchemeName, Image, TouchableOpacity } from "react-native";
+import { ColorSchemeName, Image, TouchableOpacity, View } from "react-native";
 import LinkingConfiguration from './LinkingConfiguration';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -31,14 +31,15 @@ const RootNavigator = () => {
         component = {HomeScreen}
         options = {() => ({
           headerTitle: () => (
-            <Image 
-            source={require('../assets/images/logo.png')} 
-            style = {{ width: 250, height: 50 }} />
+            <View style={{ justifyContent:'center', paddingBottom: 5 }}>
+              <Image 
+              source={require('../assets/images/logo.png')} 
+              style = {{ width: 222, height: 40 }} />
+            </View>
           ),
           headerTitleAlign: 'center',
           headerStyle: {
             backgroundColor: '#fff',
-            height: 70
           },
         })} />
       <Stack.Screen 
