@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Entypo } from '@expo/vector-icons';
-import { createEntry } from "../api/entries/post";
 import { RootTabScreenProps } from "../types";
+import Toast from 'react-native-root-toast';
 
 const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
   const [startTime, onStartTimeChange] = useState('');
@@ -88,7 +88,13 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
         <TouchableOpacity
           style = {styles.addEntry}
           onPress = {() => {
-              createEntry();
+              Toast.show('New entry created', {
+                duration: Toast.durations.LONG,
+                position: -100,
+                shadow: true,
+                animation: true,
+                delay: 0,
+              });
               navigation.goBack();
             }}>
             <Entypo name="plus" size={18} color="#fff" />

@@ -47,9 +47,11 @@ const RootNavigator = () => {
         component = {NotFoundScreen}
         options = {() => ({
           headerTitle: () => (
-            <Image 
-            source={require('../assets/images/logo.png')} 
-            style = {{ width: 250, height: 50 }} />
+            <View style={{ justifyContent:'center', paddingBottom: 5 }}>
+              <Image 
+              source={require('../assets/images/logo.png')} 
+              style = {{ width: 250, height: 50 }} />
+            </View>
           ),
           headerTitleAlign: 'center',
           headerStyle: {
