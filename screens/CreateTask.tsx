@@ -7,34 +7,12 @@ import * as Yup from 'yup';
 
 const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
   return (
-    <Formik initialValues={{ title: '', day: '', month: '', year: '', started: '', ended: '' }}
+    <Formik initialValues={{ title: '', started: '', ended: '' }}
         onSubmit = {values => console.log(values)}
         validationSchema = {Yup.object().shape({
           title: Yup.string().required('This field is required!'),
-          day: Yup.string().required('This field is required!'),
-          month: Yup.string().required('This field is required!'),
-          year: Yup.string().required('This field is required!'),
           started: Yup.string().required('This field is required!'),
           ended: Yup.string().required('This field is required!')
-          // day: Yup.number()
-          // .min(1, 'Enter a valid day')
-          // .max(31, 'Enter a valid day')
-          // .required('This field is required!'),
-          // month: Yup.number()
-          // .min(1, 'Enter a valid month')
-          // .max(12, 'Enter a valid month')
-          // .required('This field is required!'),
-          // year: Yup.number()
-          // .min(new Date().getFullYear())
-          // .required('This field is required!'),
-          // started: Yup.number()
-          // .min(1, 'Enter a valid hour')
-          // .max(24, 'Enter a valid hour')
-          // .required('This field is required!'),
-          // ended: Yup.number()
-          // .min(1, 'Enter a valid hour')
-          // .max(24, 'Enter a valid hour')
-          // .required('This field is required!')
         })}>
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <SafeAreaView style = {styles.container}>
@@ -56,69 +34,6 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
                     </Text>
                   )
                   : null}
-            </View>
-
-            <View style = {styles.timeRow}>
-              <View style = {{ width: '32%' }}>
-                <Text style = {styles.descriptionText}>
-                  Day
-                </Text>
-                <TextInput
-                  style = {styles.timeInput}
-                  onChangeText = {handleChange('day')}
-                  onBlur = {handleBlur('day')}
-                  value = {values.day}
-                  blurOnSubmit
-                  placeholder="Enter day"
-                  keyboardType="numeric" />
-                  {errors.day && touched.day
-                  ? (
-                    <Text style = {styles.errorMessage}>
-                      {errors.day}
-                    </Text>
-                  )
-                  : null}
-              </View>
-              <View style = {{ width: '32%' }}>
-                <Text style = {styles.descriptionText}>
-                  Month
-                </Text>
-                <TextInput
-                  style={styles.timeInput}
-                  onChangeText = {handleChange('month')}
-                  onBlur = {handleBlur('month')}
-                  value = {values.month}
-                  blurOnSubmit
-                  placeholder="Enter month"
-                  keyboardType="numeric" />
-                  {errors.month && touched.month
-                  ? (
-                    <Text style = {styles.errorMessage}>
-                      {errors.month}
-                    </Text>
-                  )
-                  : null}
-              </View>
-              <View style = {{ width: '32%' }}>
-                <Text style = {styles.descriptionText}>
-                  Year
-                </Text>
-                <TextInput
-                style={styles.timeInput}
-                onChangeText = {handleChange('year')}
-                onBlur = {handleBlur('year')}
-                value = {values.year}
-                blurOnSubmit
-                placeholder="Enter year"
-                keyboardType="numeric" />
-                {errors.year && touched.year
-                  ? (
-                    <Text style = {styles.errorMessage}>
-                      {errors.year}
-                    </Text>
-                  )
-                  : null}
-              </View>
             </View>
 
             <View style = {styles.timeRow}>
@@ -164,7 +79,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
               </View>
             </View>
 
-            <View style = {{ width: '95%' }}>
+            <View style = {{ width: '95%', paddingTop: 20 }}>
               <TouchableOpacity
                 style = {styles.addEntry}
                 onPress = {() => {
@@ -234,10 +149,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 15
   },
-  dropdown: {
-    borderWidth: 1,
-    borderRadius: 10,
-  },
   errorMessage: {
     color: '#CC002C',
     alignSelf: 'center'
@@ -245,5 +156,3 @@ const styles = StyleSheet.create({
 })
 
 export default CreateTask;
-
-// de descarcat POSTGRESQL

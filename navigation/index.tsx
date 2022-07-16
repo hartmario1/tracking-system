@@ -10,6 +10,7 @@ import HomeScreen from "../screens/Home";
 
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons'; 
+import LogIn from "../screens/LogIn";
 
 const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
   return (
@@ -28,7 +29,7 @@ const RootNavigator = () => {
     <Stack.Navigator>
       <Stack.Screen 
         name = "Root" 
-        component = {HomeScreen}
+        component = {LogIn}
         options = {() => ({
           headerTitle: () => (
             <View style={{ justifyContent:'center', paddingBottom: 5 }}>
@@ -40,23 +41,28 @@ const RootNavigator = () => {
           headerTitleAlign: 'center',
           headerStyle: {
             backgroundColor: '#fff',
-          },
+          }
         })} />
       <Stack.Screen 
         name = "NotFound"
         component = {NotFoundScreen}
-        options = {() => ({
+        options = {({ navigation }: RootTabScreenProps<'NotFound'>) => ({
           headerTitle: () => (
             <View style={{ justifyContent:'center', paddingBottom: 5 }}>
               <Image 
               source={require('../assets/images/logo.png')} 
-              style = {{ width: 250, height: 50 }} />
+              style = {{ width: 222, height: 40 }} />
             </View>
           ),
           headerTitleAlign: 'center',
           headerStyle: {
             backgroundColor: '#fff',
-          }
+          },
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <MaterialIcons name="arrow-back" size={24} color="black" />
+            </TouchableOpacity>
+          )
         })} />
       <Stack.Group screenOptions = {{ presentation: 'containedTransparentModal' }}>
         <Stack.Screen 
@@ -77,6 +83,23 @@ const RootNavigator = () => {
                 <MaterialIcons name="arrow-back" size={24} color="black" />
               </TouchableOpacity>
             )
+          })} />
+        <Stack.Screen 
+          name = "Home"
+          component={HomeScreen}
+          options = {() => ({
+            headerTitle: () => (
+              <View style={{ justifyContent:'center', paddingBottom: 5 }}>
+                <Image 
+                source={require('../assets/images/logo.png')} 
+                style = {{ width: 222, height: 40 }} />
+              </View>
+            ),
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#fff',
+            },
+            headerBackVisible: false
           })} />
       </Stack.Group>
     </Stack.Navigator>

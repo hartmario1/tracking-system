@@ -9,15 +9,20 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       Root: {
         screens: {
+          LogIn: {
+            screens: {
+              LogIn: 'first'
+            }
+          },
           Home: {
             screens: {
-              Home: 'first',
+              Home: 'second',
             },
           },
         },
       },
       NotFound: '*',
-      CreateTask: 'modal'
+      CreateTask: 'modal',
     },
   },
 };
