@@ -14,11 +14,16 @@ const linking: LinkingOptions<RootStackParamList> = {
               LogIn: 'first'
             }
           },
-          Home: {
+          Intern: {
             screens: {
-              Home: 'second',
+              Intern: 'second',
             },
           },
+          Admin: {
+            screens: {
+              Admin: 'third'
+            }
+          }
         },
       },
       NotFound: '*',

@@ -1,10 +1,10 @@
 import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Entypo } from '@expo/vector-icons'; 
 import Clock from "../components/Clock";
-import List from "../components/List";
+import List from "../components/InternList";
 import { RootTabScreenProps } from "../types";
 
-const HomeScreen = ({ navigation }: RootTabScreenProps<'Home'>) => (
+const InternScreen = ({ navigation }: RootTabScreenProps<'Intern'>) => (
   <SafeAreaView style = {styles.container}>
     <StatusBar
       animated = {true}
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default HomeScreen;
+export default InternScreen;
