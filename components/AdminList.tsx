@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
+import { requestHeaders } from "../api/headers";
 import Interns from "./Interns";
 
 const List = () => {
@@ -9,7 +10,10 @@ const List = () => {
 
   const getMovies = async () => {
     try {
-      const response = await fetch('https://reactnative.dev/movies.json');
+      const response = await fetch('https://tracksystem.herokuapp.com/users', {
+        method: 'GET',
+        headers: requestHeaders
+      });
       const json = await response.json();
       setData(json.movies);
     } catch (error) {

@@ -4,106 +4,121 @@ import { RootTabScreenProps } from "../types";
 import Toast from 'react-native-root-toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { requestHeaders } from "../api/headers";
 
-const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
-  return (
-    <Formik initialValues={{ title: '', started: '', ended: '' }}
-        onSubmit = {values => console.log(values)}
-        validationSchema = {Yup.object().shape({
-          title: Yup.string().required('This field is required!'),
-          started: Yup.string().required('This field is required!'),
-          ended: Yup.string().required('This field is required!')
-        })}>
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-          <SafeAreaView style = {styles.container}>
-            <View style = {{ width: '95%' }}>
+const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => (
+  <Formik initialValues={{ title: '', started: '', ended: '' }}
+      onSubmit = {async values => {
+        try {
+          const data = await fetch('https://tracksystem.herokuapp.com/tasks', {
+            method: 'POST',
+            headers: requestHeaders,
+            body: JSON.stringify({
+              title: values.title,
+              started: values.started,
+              ended: values.ended 
+            })
+          });
+          return data;
+        } catch (error) {
+          console.error(error);
+        }
+
+        Toast.show('New entry created', {
+          duration: Toast.durations.LONG,
+          position: -100,
+          shadow: true,
+          animation: true,
+          delay: 0,
+        });
+        navigation.goBack();
+      }}
+      validationSchema = {Yup.object().shape({
+        title: Yup.string().required('This field is required!'),
+        started: Yup.string().required('This field is required!'),
+        ended: Yup.string().required('This field is required!')
+      })}>
+      {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+        <SafeAreaView style = {styles.container}>
+          <View style = {{ width: '95%' }}>
+            <Text style = {styles.descriptionText}>
+              Title
+            </Text>
+            <TextInput
+              style={styles.commitInput}
+              blurOnSubmit
+              onChangeText={handleChange('title')}
+              onBlur = {handleBlur('title')}
+              value={values.title}
+              placeholder="Write a brief description of what you did" />
+              {errors.title && touched.title
+                ? (
+                  <Text style = {styles.errorMessage}>
+                    {errors.title}
+                  </Text>
+                )
+                : null}
+          </View>
+
+          <View style = {styles.timeRow}>
+            <View style = {{ width: '48%' }}>
               <Text style = {styles.descriptionText}>
-                Title
+                Started at
               </Text>
               <TextInput
-                style={styles.commitInput}
-                blurOnSubmit
-                onChangeText={handleChange('title')}
-                onBlur = {handleBlur('title')}
-                value={values.title}
-                placeholder="Write a brief description of what you did" />
-                {errors.title && touched.title
-                  ? (
-                    <Text style = {styles.errorMessage}>
-                      {errors.title}
-                    </Text>
-                  )
-                  : null}
-            </View>
-
-            <View style = {styles.timeRow}>
-              <View style = {{ width: '48%' }}>
-                <Text style = {styles.descriptionText}>
-                  Started at
-                </Text>
-                <TextInput
-                  style={styles.timeInput}
-                  onChangeText = {handleChange('started')}
-                  onBlur = {handleBlur('started')}
-                  value = {values.started}
-                  blurOnSubmit
-                  placeholder="Enter start time"
-                  keyboardType="numeric" />
-                  {errors.started && touched.started
-                  ? (
-                    <Text style = {styles.errorMessage}>
-                      {errors.started}
-                    </Text>
-                  )
-                  : null}
-              </View>
-              <View style = {{ width: '48%' }}>
-                <Text style = {styles.descriptionText}>
-                  Ended at
-                </Text>
-                <TextInput
                 style={styles.timeInput}
-                onChangeText = {handleChange('ended')}
-                onBlur = {handleBlur('ended')}
-                value = {values.ended}
+                onChangeText = {handleChange('started')}
+                onBlur = {handleBlur('started')}
+                value = {values.started}
                 blurOnSubmit
-                placeholder="Enter end time"
+                placeholder="Enter start time"
                 keyboardType="numeric" />
-                {errors.ended && touched.ended
-                  ? (
-                    <Text style = {styles.errorMessage}>
-                      {errors.ended}
-                    </Text>
-                  )
-                  : null}
-              </View>
-            </View>
-
-            <View style = {{ width: '95%', paddingTop: 20 }}>
-              <TouchableOpacity
-                style = {styles.addEntry}
-                onPress = {() => {
-                    handleSubmit();
-                    Toast.show('New entry created', {
-                      duration: Toast.durations.LONG,
-                      position: -100,
-                      shadow: true,
-                      animation: true,
-                      delay: 0,
-                    });
-                    navigation.goBack();
-                  }}>
-                  <Entypo name="plus" size={18} color="#fff" />
-                  <Text style = {styles.addEntryText}>
-                    Create new entry
+                {errors.started && touched.started
+                ? (
+                  <Text style = {styles.errorMessage}>
+                    {errors.started}
                   </Text>
-              </TouchableOpacity>
+                )
+                : null}
             </View>
-          </SafeAreaView>
-        )}
-      </Formik>
-  )
-}
+            <View style = {{ width: '48%' }}>
+              <Text style = {styles.descriptionText}>
+                Ended at
+              </Text>
+              <TextInput
+              style={styles.timeInput}
+              onChangeText = {handleChange('ended')}
+              onBlur = {handleBlur('ended')}
+              value = {values.ended}
+              blurOnSubmit
+              placeholder="Enter end time"
+              keyboardType="numeric" />
+              {errors.ended && touched.ended
+                ? (
+                  <Text style = {styles.errorMessage}>
+                    {errors.ended}
+                  </Text>
+                )
+                : null}
+            </View>
+          </View>
+
+          <View style = {{ width: '95%', paddingTop: 20 }}>
+            <TouchableOpacity
+              style = {styles.addEntry}
+              onPress = {() => {
+                  handleSubmit();
+                }}>
+                <Entypo name="plus" size={18} color="#fff" />
+                <Text style = {styles.addEntryText}>
+                  Create new entry
+                </Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      )}
+    </Formik>
+);
 
 const styles = StyleSheet.create({
   container: {

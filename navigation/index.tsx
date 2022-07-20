@@ -13,6 +13,7 @@ import AdminScreen from "../screens/Admin";
 
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import CreateUser from "../screens/CreateUser";
 
 const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
   return (
@@ -61,7 +62,7 @@ const RootNavigator = () => {
             backgroundColor: '#fff',
           },
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.navigate('Admin')}>
               <MaterialIcons name="arrow-back" size={24} color="black" />
             </TouchableOpacity>
           )
@@ -108,7 +109,7 @@ const RootNavigator = () => {
       <Stack.Group screenOptions = {{ presentation: 'containedTransparentModal' }}>
         <Stack.Screen 
           name = "CreateTask"
-          component={CreateTask}
+          component = {CreateTask}
           options = {({ navigation }: RootTabScreenProps<'CreateTask'>) => ({
             headerTitle: 'Create new entry',
             headerTitleAlign: 'center',
@@ -124,7 +125,26 @@ const RootNavigator = () => {
                 <MaterialIcons name="arrow-back" size={24} color="black" />
               </TouchableOpacity>
             )
-          })} />
+            })} />
+          <Stack.Screen 
+          name = "CreateUser"
+          component = {CreateUser}
+          options = {({ navigation }: RootTabScreenProps<'CreateUser'>) => ({
+            headerTitle: 'Create new user',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#fff',
+            },
+            headerTitleStyle: {
+              color: '#000',
+              fontFamily: 'poppins'
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <MaterialIcons name="arrow-back" size={24} color="black" />
+              </TouchableOpacity>
+            )
+            })} />
       </Stack.Group>
     </Stack.Navigator>
   );
