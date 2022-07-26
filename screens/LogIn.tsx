@@ -5,7 +5,7 @@ import { RootTabScreenProps } from "../types";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Toast from "react-native-root-toast";
-import { requestHeaders } from "../api/headers";
+import { loginRequestHeaders } from "../api/headers";
 
 const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
   <Formik initialValues={{ username: '', password: '' }}
@@ -13,7 +13,7 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
         try {
           const data = await fetch('https://tracksystem.herokuapp.com/auth', {
             method: 'POST',
-            headers: requestHeaders,
+            headers: loginRequestHeaders,
             body: JSON.stringify({
               username: values.username,
               password: values.password
@@ -93,6 +93,8 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
                 style = {styles.loginButton}
                 onPress = {() => {
                     handleSubmit();
+
+                    // move to onSubmit
                     navigation.navigate('Intern');
                   }}>
                   <SimpleLineIcons name="login" size={18} color="white" style = {{ paddingRight: 5 }} />

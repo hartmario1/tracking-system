@@ -5,6 +5,7 @@ import Toast from 'react-native-root-toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { requestHeaders } from "../api/headers";
+import { Role } from '../api/models/user';
 
 const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
   <Formik initialValues={{ username: '', email: '', password: '', phone: '', first_name: '', last_name: '' }}
@@ -18,8 +19,9 @@ const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
               email: values.email,
               password: values.password,
               phone: values.phone,
-              first_name: values.first_name,
-              last_name: values.last_name 
+              firstName: values.first_name,
+              lastName: values.last_name,
+              role: Role.student
             })
           });
           return data;

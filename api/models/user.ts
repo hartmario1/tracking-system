@@ -12,7 +12,7 @@ export interface User {
   tasks: Task
 }
 
-enum Role {
+export enum Role {
   student,
   admin
 }

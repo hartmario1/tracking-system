@@ -14,6 +14,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => (
             method: 'POST',
             headers: requestHeaders,
             body: JSON.stringify({
+              // add user_id
               title: values.title,
               started: values.started,
               ended: values.ended 
