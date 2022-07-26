@@ -4,10 +4,36 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import { RootTabScreenProps } from "../types";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import Toast from "react-native-root-toast";
+import { requestHeaders } from "../api/headers";
 
 const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
   <Formik initialValues={{ email: '', password: '' }}
-      onSubmit = {values => console.log(values)}
+      onSubmit = {async values => {
+        try {
+          const data = await fetch('https://tracksystem.herokuapp.com/', {
+            method: 'POST',
+            headers: requestHeaders,
+            body: JSON.stringify({
+              email: values.email,
+              password: values.password
+            })
+          });
+          return data;
+        } catch (error) {
+          console.error(error);
+        }
+
+        Toast.show('Logged in successfully', {
+          duration: Toast.durations.LONG,
+          position: -100,
+          shadow: true,
+          animation: true,
+          delay: 0,
+        });
+
+        
+      }}
       validationSchema = {Yup.object().shape({
         email: Yup.string().required('This field is required!'),
         password: Yup.string().required('This field is required!')
@@ -68,7 +94,7 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
                 style = {styles.loginButton}
                 onPress = {() => {
                     handleSubmit();
-                    navigation.navigate('CreateUser');
+                    navigation.navigate('Intern');
                   }}>
                   <SimpleLineIcons name="login" size={18} color="white" style = {{ paddingRight: 5 }} />
                   <Text style = {styles.loginButtonText}>
