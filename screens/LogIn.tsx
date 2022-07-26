@@ -8,14 +8,14 @@ import Toast from "react-native-root-toast";
 import { requestHeaders } from "../api/headers";
 
 const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
-  <Formik initialValues={{ email: '', password: '' }}
+  <Formik initialValues={{ username: '', password: '' }}
       onSubmit = {async values => {
         try {
-          const data = await fetch('https://tracksystem.herokuapp.com/', {
+          const data = await fetch('https://tracksystem.herokuapp.com/auth', {
             method: 'POST',
             headers: requestHeaders,
             body: JSON.stringify({
-              email: values.email,
+              username: values.username,
               password: values.password
             })
           });
@@ -32,10 +32,9 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
           delay: 0,
         });
 
-        
       }}
       validationSchema = {Yup.object().shape({
-        email: Yup.string().required('This field is required!'),
+        username: Yup.string().required('This field is required!'),
         password: Yup.string().required('This field is required!')
       })}>
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -51,19 +50,19 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
             </View>
             <View style = {{ paddingBottom: 20 }}>
               <Text style = {{ letterSpacing: 1, fontWeight: 'bold', color: 'grey' }}>
-                EMAIL
+                USERNAME
               </Text>
               <TextInput 
                 style = {styles.input} 
                 blurOnSubmit
-                placeholder = "Enter your email"
-                value = {values.email}
-                onChangeText = {handleChange('email')}
-                onBlur = {handleBlur('email')} />
-                {errors.email && touched.email
+                placeholder = "Enter your username"
+                value = {values.username}
+                onChangeText = {handleChange('username')}
+                onBlur = {handleBlur('username')} />
+                {errors.username && touched.username
                   ? (
                     <Text style = {styles.errorMessage}>
-                      {errors.email}
+                      {errors.username}
                     </Text>
                   )
                   : null}
