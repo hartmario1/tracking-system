@@ -68,7 +68,7 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
                 style = {styles.loginButton}
                 onPress = {() => {
                     handleSubmit();
-                    navigation.navigate('Admin');
+                    navigation.navigate('CreateUser');
                   }}>
                   <SimpleLineIcons name="login" size={18} color="white" style = {{ paddingRight: 5 }} />
                   <Text style = {styles.loginButtonText}>
