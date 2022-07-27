@@ -5,32 +5,32 @@ import { RootTabScreenProps } from "../types";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Toast from "react-native-root-toast";
-import { loginRequestHeaders } from "../api/headers";
 
 const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
   <Formik initialValues={{ username: '', password: '' }}
       onSubmit = {async values => {
         try {
-          const data = await fetch('https://tracksystem.herokuapp.com/auth', {
-            method: 'POST',
-            headers: loginRequestHeaders,
-            body: JSON.stringify({
-              username: values.username,
-              password: values.password
+          const auth = btoa(`${values.username.toLowerCase()}:${values.password}`);
+          const stream = await fetch('https://tracksystem.herokuapp.com/auth', {
+            method: 'post',
+            headers: new Headers({
+              'Content-Type': 'application/json', 
+              authorization: `basic ${auth}` 
             })
           });
-          return data;
+          const response = stream.json();
+          return Promise.resolve(response);
         } catch (error) {
-          console.error(error);
+          return Promise.reject(error)
         }
 
-        Toast.show('Logged in successfully', {
-          duration: Toast.durations.LONG,
-          position: -100,
-          shadow: true,
-          animation: true,
-          delay: 0,
-        });
+        // Toast.show('Logged in successfully', {
+        //   duration: Toast.durations.LONG,
+        //   position: -100,
+        //   shadow: true,
+        //   animation: true,
+        //   delay: 0,
+        // });
 
       }}
       validationSchema = {Yup.object().shape({
