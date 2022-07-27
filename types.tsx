@@ -15,6 +15,7 @@ export type RootStackParamList = {
   CreateTask: undefined;
   CreateUser: undefined;
   NotFound: undefined;
+  SignUp: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -29,6 +30,7 @@ export type RootTabParamList = {
   CreateTask: undefined;
   CreateUser: undefined;
   NotFound: undefined;
+  SignUp: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
-import { requestHeaders } from "../api/headers";
+import { loginRequestHeaders } from "../api/headers";
 import Interns from "./Interns";
 
 const List = () => {
@@ -12,7 +12,7 @@ const List = () => {
     try {
       const response = await fetch('https://tracksystem.herokuapp.com/users', {
         method: 'GET',
-        headers: requestHeaders
+        headers: loginRequestHeaders
       });
       const json = await response.json();
       setData(json.movies);

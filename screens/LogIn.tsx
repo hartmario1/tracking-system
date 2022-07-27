@@ -4,13 +4,15 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import { RootTabScreenProps } from "../types";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { Buffer } from 'buffer';
 import Toast from "react-native-root-toast";
 
 const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
   <Formik initialValues={{ username: '', password: '' }}
       onSubmit = {async values => {
         try {
-          const auth = btoa(`${values.username.toLowerCase()}:${values.password}`);
+          const encode = (str: string):string => new Buffer(str, 'binary').toString('base64');
+          const auth = encode(`${values.username.toLowerCase()}:${values.password}`);
           const stream = await fetch('https://tracksystem.herokuapp.com/auth', {
             method: 'post',
             headers: new Headers({
@@ -18,20 +20,32 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
               authorization: `basic ${auth}` 
             })
           });
+
+          if (stream.status === 200) {
+            Toast.show('Logged in successfully', {
+              duration: Toast.durations.LONG,
+              position: -100,
+              shadow: true,
+              animation: true,
+              delay: 0,
+            });
+  
+            navigation.navigate('Intern');
+          } else {
+            Toast.show('Something went wrong, try again!', {
+              duration: Toast.durations.LONG,
+              position: -100,
+              shadow: true,
+              animation: true,
+              delay: 0,
+            });
+          }
+
           const response = stream.json();
           return Promise.resolve(response);
         } catch (error) {
           return Promise.reject(error)
         }
-
-        // Toast.show('Logged in successfully', {
-        //   duration: Toast.durations.LONG,
-        //   position: -100,
-        //   shadow: true,
-        //   animation: true,
-        //   delay: 0,
-        // });
-
       }}
       validationSchema = {Yup.object().shape({
         username: Yup.string().required('This field is required!'),
@@ -87,15 +101,20 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
                   )
                   : null}
             </View>
+            <View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('SignUp')}>
+                <Text style = {{ color: '#5371ff', alignSelf: 'center', paddingTop: 10 }}>
+                  Don't have an account? Sign up!
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-            <View style = {{ paddingTop: 285 }}>
+            <View style = {{ paddingTop: 250 }}>
               <TouchableOpacity
                 style = {styles.loginButton}
                 onPress = {() => {
-                    handleSubmit();
-
-                    // move to onSubmit
-                    navigation.navigate('Intern');
+                    handleSubmit();                    
                   }}>
                   <SimpleLineIcons name="login" size={18} color="white" style = {{ paddingRight: 5 }} />
                   <Text style = {styles.loginButtonText}>

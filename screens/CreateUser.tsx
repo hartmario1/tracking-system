@@ -4,7 +4,7 @@ import { RootTabScreenProps } from "../types";
 import Toast from 'react-native-root-toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { requestHeaders } from "../api/headers";
+import { loginRequestHeaders } from "../api/headers";
 import { Role } from '../api/models/user';
 
 const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
@@ -13,7 +13,7 @@ const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
         try {
           const data = await fetch('https://tracksystem.herokuapp.com/users', {
             method: 'POST',
-            headers: requestHeaders,
+            headers: loginRequestHeaders,
             body: JSON.stringify({
               username: values.username,
               email: values.email,
@@ -21,7 +21,7 @@ const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
               phone: values.phone,
               firstName: values.first_name,
               lastName: values.last_name,
-              role: Role.student
+              role: Role.admin
             })
           });
           return data;

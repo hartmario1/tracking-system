@@ -23,6 +23,11 @@ const linking: LinkingOptions<RootStackParamList> = {
             screens: {
               Admin: 'third'
             }
+          },
+          SignUp: {
+            screens: {
+              SignUp: 'fourth'
+            }
           }
         },
       },

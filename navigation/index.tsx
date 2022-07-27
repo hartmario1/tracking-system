@@ -10,10 +10,11 @@ import NotFoundScreen from "../screens/NotFound";
 import InternScreen from "../screens/Intern";
 import LogIn from "../screens/LogIn";
 import AdminScreen from "../screens/Admin";
+import CreateUser from "../screens/CreateUser";
+import SignUp from "../screens/SignUp";
 
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import CreateUser from "../screens/CreateUser";
 
 const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
   return (
@@ -45,6 +46,27 @@ const RootNavigator = () => {
           headerStyle: {
             backgroundColor: '#fff',
           }
+        })} />
+        <Stack.Screen 
+        name = "SignUp" 
+        component = {SignUp}
+        options = {({ navigation }: RootTabScreenProps<'SignUp'>) => ({
+          headerTitle: () => (
+            <View style={{ justifyContent:'center', paddingBottom: 5 }}>
+              <Image 
+              source={require('../assets/images/logo.png')} 
+              style = {{ width: 222, height: 40 }} />
+            </View>
+          ),
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#fff',
+          },
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <MaterialIcons name="arrow-back" size={24} color="black" />
+            </TouchableOpacity>
+          )
         })} />
       <Stack.Screen 
         name = "NotFound"
@@ -130,7 +152,7 @@ const RootNavigator = () => {
           name = "CreateUser"
           component = {CreateUser}
           options = {({ navigation }: RootTabScreenProps<'CreateUser'>) => ({
-            headerTitle: 'Create new user',
+            headerTitle: 'Create new user admin',
             headerTitleAlign: 'center',
             headerStyle: {
               backgroundColor: '#fff',
