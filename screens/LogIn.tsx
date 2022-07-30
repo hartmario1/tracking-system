@@ -21,6 +21,7 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
             })
           });
 
+          const response = await stream.json();
           if (stream.status === 200) {
             Toast.show('Logged in successfully', {
               duration: Toast.durations.LONG,
@@ -29,8 +30,11 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
               animation: true,
               delay: 0,
             });
-  
-            navigation.navigate('Intern');
+            
+            const isAdmin = response.user.role === "admin"
+            if (isAdmin) navigation.navigate('Admin')
+            else navigation.navigate('Intern');
+
           } else {
             Toast.show('Something went wrong, try again!', {
               duration: Toast.durations.LONG,
@@ -40,8 +44,7 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
               delay: 0,
             });
           }
-
-          const response = stream.json();
+          
           return Promise.resolve(response);
         } catch (error) {
           return Promise.reject(error)

@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useSelector } from "react-redux";
+import { getTokenId } from "../features/tokenSlice";
 import Task from "./Task";
 
 const List = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const token = useSelector(getTokenId)
+  console.log(token)
 
   const getMovies = async () => {
     try {
