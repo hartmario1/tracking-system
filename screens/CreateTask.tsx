@@ -12,12 +12,12 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => (
         try {
           const data = await fetch('https://tracksystem.herokuapp.com/tasks', {
             method: 'post',
-            headers: requestHeaders,
+            headers: requestHeaders(),
             body: JSON.stringify({
               // add user_id
               title: values.title,
               started: values.started,
-              ended: values.ended 
+              ended: values.ended
             })
           });
 

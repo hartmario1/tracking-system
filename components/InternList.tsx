@@ -17,7 +17,7 @@ const List = () => {
     try {
       const response = await fetch('https://tracksystem.herokuapp.com/tasks', {
         method: 'get',
-        headers: requestHeaders
+        headers: requestHeaders()
       });
 
       const json = await response.json();
@@ -46,7 +46,7 @@ const List = () => {
           data = {data}
           renderItem = {renderItem}
           keyExtractor = {item => item.userId} />
-      )} 
+      )}
     </SafeAreaView>
   )
 }

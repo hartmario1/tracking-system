@@ -12,7 +12,7 @@ const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
         try {
           const data = await fetch('https://tracksystem.herokuapp.com/users', {
             method: 'post',
-            headers: requestHeaders,
+            headers: requestHeaders(),
             body: JSON.stringify({
               username: values.username,
               email: values.email,

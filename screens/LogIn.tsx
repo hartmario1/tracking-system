@@ -1,13 +1,17 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SimpleLineIcons } from '@expo/vector-icons'; 
+import { SimpleLineIcons } from '@expo/vector-icons';
 import { RootTabScreenProps } from "../types";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Buffer } from 'buffer';
 import Toast from "react-native-root-toast";
+import { setToken } from '../features/tokenSlice';
+import { useDispatch } from 'react-redux';
 
-const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
+const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => {
+  const dispatch = useDispatch();
+  return (
   <Formik initialValues={{ username: '', password: '' }}
       onSubmit = {async values => {
         try {
@@ -16,8 +20,8 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
           const stream = await fetch('https://tracksystem.herokuapp.com/auth', {
             method: 'post',
             headers: new Headers({
-              'Content-Type': 'application/json', 
-              authorization: `basic ${auth}` 
+              'Content-Type': 'application/json',
+              authorization: `basic ${auth}`
             })
           });
 
@@ -30,7 +34,7 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
               animation: true,
               delay: 0,
             });
-
+            dispatch(setToken(response.token));
             const isAdmin = response.user.role === "admin"
             if (isAdmin) navigation.navigate('Admin')
             else navigation.navigate('Intern');
@@ -69,8 +73,8 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
               <Text style = {{ letterSpacing: 1, fontWeight: 'bold', color: 'grey' }}>
                 USERNAME
               </Text>
-              <TextInput 
-                style = {styles.input} 
+              <TextInput
+                style = {styles.input}
                 blurOnSubmit
                 placeholder = "Enter your username"
                 value = {values.username}
@@ -117,7 +121,7 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
               <TouchableOpacity
                 style = {styles.loginButton}
                 onPress = {() => {
-                    handleSubmit();                    
+                    handleSubmit();
                   }}>
                   <SimpleLineIcons name="login" size={18} color="white" style = {{ paddingRight: 5 }} />
                   <Text style = {styles.loginButtonText}>
@@ -127,9 +131,9 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
             </View>
           </View>
         </SafeAreaView>
-      )}  
+      )}
   </Formik>
-);
+)};
 
 const styles = StyleSheet.create({
   container: {
