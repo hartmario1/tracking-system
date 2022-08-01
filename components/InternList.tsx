@@ -1,21 +1,28 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useSelector } from "react-redux";
-import { getTokenId } from "../features/tokenSlice";
-import Task from "./Task";
+import Tasks from "./Task";
+import { requestHeaders } from "../api/headers";
+import { Task } from "../api/models/task";
+// import { useSelector } from "react-redux";
+// import { getTokenId } from "../features/tokenSlice";
 
 const List = () => {
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
-  const token = useSelector(getTokenId)
-  console.log(token)
+  const [data, setData] = useState<Task[]>();
+  // const token = useSelector(getTokenId)
+  // console.log(token)
 
-  const getMovies = async () => {
+  const getTasks = async () => {
     try {
-      const response = await fetch('https://tracksystem.herokuapp.com/tasks');
+      const response = await fetch('https://tracksystem.herokuapp.com/tasks', {
+        method: 'get',
+        headers: requestHeaders
+      });
+
       const json = await response.json();
-      setData(json.movies);
+      const tasks = json as Task[];
+      setData(tasks);
     } catch (error) {
       console.error(error);
     } finally {
@@ -24,12 +31,12 @@ const List = () => {
   }
 
   useEffect(() => {
-    getMovies();
+    getTasks();
   }, []);
 
   // change with relevant data from api
   const renderItem = ({ item }: { item: any }) => (
-    <Task title = {item.title} start = {item.releaseYear} end = {item.releaseYear} day = {item.releaseYear} month = {item.releaseYear} year = {item.releaseYear} />
+    <Tasks title = {item.title} start = {item.releaseYear} end = {item.releaseYear} day = {item.releaseYear} month = {item.releaseYear} year = {item.releaseYear} />
   );
 
   return (
@@ -38,7 +45,7 @@ const List = () => {
         <FlatList
           data = {data}
           renderItem = {renderItem}
-          keyExtractor = {item => item.id} />
+          keyExtractor = {item => item.userId} />
       )} 
     </SafeAreaView>
   )

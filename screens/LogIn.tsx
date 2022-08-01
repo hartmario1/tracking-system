@@ -30,7 +30,7 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => (
               animation: true,
               delay: 0,
             });
-            
+
             const isAdmin = response.user.role === "admin"
             if (isAdmin) navigation.navigate('Admin')
             else navigation.navigate('Intern');

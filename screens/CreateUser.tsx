@@ -4,16 +4,15 @@ import { RootTabScreenProps } from "../types";
 import Toast from 'react-native-root-toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { loginRequestHeaders } from "../api/headers";
-import { Role } from '../api/models/user';
+import { requestHeaders } from "../api/headers";
 
 const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
   <Formik initialValues={{ username: '', email: '', password: '', phone: '', first_name: '', last_name: '' }}
       onSubmit = {async values => {
         try {
           const data = await fetch('https://tracksystem.herokuapp.com/users', {
-            method: 'POST',
-            headers: loginRequestHeaders,
+            method: 'post',
+            headers: requestHeaders,
             body: JSON.stringify({
               username: values.username,
               email: values.email,
@@ -21,7 +20,7 @@ const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
               phone: values.phone,
               firstName: values.first_name,
               lastName: values.last_name,
-              role: Role.admin
+              role: 'admin'
             })
           });
           return data;
@@ -98,7 +97,8 @@ const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
               onChangeText={handleChange('password')}
               onBlur = {handleBlur('password')}
               value={values.password}
-              placeholder="Enter new password" />
+              placeholder="Enter new password"
+              secureTextEntry />
               {errors.password && touched.password
                 ? (
                   <Text style = {styles.errorMessage}>

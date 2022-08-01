@@ -4,15 +4,15 @@ import { RootTabScreenProps } from "../types";
 import Toast from 'react-native-root-toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { loginRequestHeaders } from "../api/headers";
+import { requestHeaders } from "../api/headers";
 
 const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => (
   <Formik initialValues={{ title: '', started: '', ended: '' }}
       onSubmit = {async values => {
         try {
           const data = await fetch('https://tracksystem.herokuapp.com/tasks', {
-            method: 'POST',
-            headers: loginRequestHeaders,
+            method: 'post',
+            headers: requestHeaders,
             body: JSON.stringify({
               // add user_id
               title: values.title,
@@ -20,19 +20,32 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => (
               ended: values.ended 
             })
           });
+
+          if (data.status === 201) {
+            Toast.show('New admin created', {
+              duration: Toast.durations.LONG,
+              position: -100,
+              shadow: true,
+              animation: true,
+              delay: 0,
+            });
+
+            navigation.goBack();
+          } else {
+            Toast.show('Something went wrong, please try again!', {
+              duration: Toast.durations.LONG,
+              position: -100,
+              shadow: true,
+              animation: true,
+              delay: 0,
+            });
+          }
+
           return data;
         } catch (error) {
           console.error(error);
         }
 
-        Toast.show('New entry created', {
-          duration: Toast.durations.LONG,
-          position: -100,
-          shadow: true,
-          animation: true,
-          delay: 0,
-        });
-        navigation.goBack();
       }}
       validationSchema = {Yup.object().shape({
         title: Yup.string().required('This field is required!'),

@@ -1,5 +1,5 @@
 export interface Task {
-  user_id: number;
+  userId: string;
   description: string;
   startDate: number;
   endDate: number;

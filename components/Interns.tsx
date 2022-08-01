@@ -1,27 +1,28 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons'; 
+import { User } from "../api/models/user";
 
-const Interns = ({ username, fname, lname, phone }: { username: string, fname: string, lname: string, phone: string }) => (
+const Interns = ({ user }: { user: User }) => (
   <SafeAreaView style = {styles.item}>
     <View style = {{ margin: 10, width: '95%' }}>
       <View>
         <Text style = {styles.title}>Username: 
-          <Text style = {styles.date}> {username}</Text>
+          <Text style = {styles.date}> {user.username}</Text>
         </Text>
       </View>
       <View>
         <Text style = {styles.title}>First Name: 
-          <Text style = {styles.date}> {fname}</Text>
+          <Text style = {styles.date}> {user.firstName}</Text>
         </Text>
       </View>
       <View>
         <Text style = {styles.title}>Last Name: 
-          <Text style = {styles.date}> {lname}</Text>
+          <Text style = {styles.date}> {user.lastName}</Text>
         </Text>
       </View>
       <View style = {{ paddingBottom: 6 }}>
         <Text style = {styles.title}>Phone Number: 
-          <Text style = {styles.date}> {phone}</Text>
+          <Text style = {styles.date}> {user.phone}</Text>
         </Text>
       </View>
       <TouchableOpacity style = {styles.showButton}>
@@ -32,7 +33,7 @@ const Interns = ({ username, fname, lname, phone }: { username: string, fname: s
       </TouchableOpacity>
     </View>
   </SafeAreaView>
-)
+);
 
 const styles = StyleSheet.create({
   item: {

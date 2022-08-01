@@ -1,21 +1,25 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
-import { loginRequestHeaders } from "../api/headers";
+import { requestHeaders } from "../api/headers";
+import { User } from "../api/models/user";
 import Interns from "./Interns";
 
 const List = () => {
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<User[]>();
 
-  const getMovies = async () => {
+  const getUsers = async () => {
     try {
       const response = await fetch('https://tracksystem.herokuapp.com/users', {
-        method: 'GET',
-        headers: loginRequestHeaders
+        method: 'get',
+        headers: requestHeaders
       });
+      
       const json = await response.json();
-      setData(json.movies);
+      const users = json as User[];
+
+      setData(users);
     } catch (error) {
       console.error(error);
     } finally {
@@ -24,12 +28,11 @@ const List = () => {
   }
 
   useEffect(() => {
-    getMovies();
+    getUsers();
   }, []);
 
-  // change with relevant data from api
   const renderItem = ({ item }: { item: any }) => (
-    <Interns username = {item.releaseYear} fname = {item.releaseYear} lname = {item.releaseYear} phone = {item.releaseYear} />
+    <Interns user = {item} />
   );
 
   return (
@@ -38,7 +41,7 @@ const List = () => {
         <FlatList
           data = {data}
           renderItem = {renderItem}
-          keyExtractor = {item => item.id} />
+          keyExtractor = {item => item._id} />
       )} 
     </SafeAreaView>
   )

@@ -109,7 +109,7 @@ const RootNavigator = () => {
         <Stack.Screen 
           name = "Admin"
           component={AdminScreen}
-          options = {() => ({
+          options = {({ navigation }: RootTabScreenProps<'Admin'>) => ({
             headerTitle: () => (
               <View style={{ justifyContent:'center', paddingBottom: 5 }}>
                 <Image 
@@ -123,7 +123,7 @@ const RootNavigator = () => {
             },
             headerBackVisible: false,
             headerRight: () => (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('CreateUser')}>
                 <Entypo name="plus" size={24} color="black" />
               </TouchableOpacity>
             )
