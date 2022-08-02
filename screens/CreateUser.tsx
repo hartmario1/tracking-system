@@ -23,19 +23,30 @@ const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
               role: 'admin'
             })
           });
+
+          if (data.status === 201) {
+            Toast.show('New user created', {
+              duration: Toast.durations.LONG,
+              position: -100,
+              shadow: true,
+              animation: true,
+              delay: 0,
+            });
+            
+            navigation.goBack();
+          } else {
+            Toast.show('Something went wrong, please try again!', {
+              duration: Toast.durations.LONG,
+              position: -100,
+              shadow: true,
+              animation: true,
+              delay: 0,
+            });
+          }
           return data;
         } catch (error) {
           console.error(error);
         };
-
-        Toast.show('New user created', {
-          duration: Toast.durations.LONG,
-          position: -100,
-          shadow: true,
-          animation: true,
-          delay: 0,
-        });
-        navigation.goBack();
       }}
       validationSchema = {Yup.object().shape({
         username: Yup.string().required('This field is required!'),

@@ -4,14 +4,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Tasks from "./Task";
 import { requestHeaders } from "../api/headers";
 import { Task } from "../api/models/task";
-// import { useSelector } from "react-redux";
-// import { getTokenId } from "../features/tokenSlice";
 
 const List = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<Task[]>();
-  // const token = useSelector(getTokenId)
-  // console.log(token)
 
   const getTasks = async () => {
     try {

@@ -5,24 +5,29 @@ import Toast from 'react-native-root-toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { requestHeaders } from "../api/headers";
+import { store } from "../store";
 
-const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => (
-  <Formik initialValues={{ title: '', started: '', ended: '' }}
+const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
+  const id = store.getState();
+
+  return (
+    <Formik initialValues={{ title: '', description: '', started: '', ended: '' }}
       onSubmit = {async values => {
         try {
           const data = await fetch('https://tracksystem.herokuapp.com/tasks', {
             method: 'post',
             headers: requestHeaders(),
             body: JSON.stringify({
-              // add user_id
+              userId: id.userId.userId,
               title: values.title,
-              started: values.started,
-              ended: values.ended
+              description: values.description,
+              startDate: values.started,
+              endDate: values.ended
             })
           });
 
           if (data.status === 201) {
-            Toast.show('New admin created', {
+            Toast.show('New entry created', {
               duration: Toast.durations.LONG,
               position: -100,
               shadow: true,
@@ -54,7 +59,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => (
       })}>
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
         <SafeAreaView style = {styles.container}>
-          <View style = {{ width: '95%' }}>
+          <View style = {{ width: '95%', paddingBottom: 10 }}>
             <Text style = {styles.descriptionText}>
               Title
             </Text>
@@ -69,6 +74,29 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => (
                 ? (
                   <Text style = {styles.errorMessage}>
                     {errors.title}
+                  </Text>
+                )
+                : null}
+          </View>
+
+          <View style = {{ width: '95%' }}>
+            <Text style = {styles.descriptionText}>
+              Description
+            </Text>
+            <TextInput
+              style={styles.descriptionInput}
+              blurOnSubmit
+              multiline
+              numberOfLines={5}
+              maxLength={400}
+              onChangeText={handleChange('description')}
+              onBlur = {handleBlur('description')}
+              value={values.description}
+              placeholder="Write a brief description of what you did" />
+              {errors.description && touched.description
+                ? (
+                  <Text style = {styles.errorMessage}>
+                    {errors.description}
                   </Text>
                 )
                 : null}
@@ -132,7 +160,8 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => (
         </SafeAreaView>
       )}
     </Formik>
-);
+  )
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -157,6 +186,13 @@ const styles = StyleSheet.create({
   },
   commitInput: {
     height: 40,
+    margin: 5,
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+  },
+  descriptionInput: {
+    height: 150,
     margin: 5,
     borderWidth: 1,
     borderRadius: 10,

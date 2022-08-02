@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import tokenSlice from './features/tokenSlice';
 import logger from 'redux-logger';
+import userIdSlice from './features/userIdSlice';
 
 export const store = configureStore({
 	reducer: {
-		token: tokenSlice
+		token: tokenSlice,
+		userId: userIdSlice
 	},
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
 });

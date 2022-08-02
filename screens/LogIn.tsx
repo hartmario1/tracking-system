@@ -8,9 +8,11 @@ import { Buffer } from 'buffer';
 import Toast from "react-native-root-toast";
 import { setToken } from '../features/tokenSlice';
 import { useDispatch } from 'react-redux';
+import { setUserId } from "../features/userIdSlice";
 
 const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => {
   const dispatch = useDispatch();
+
   return (
   <Formik initialValues={{ username: '', password: '' }}
       onSubmit = {async values => {
@@ -24,8 +26,9 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => {
               authorization: `basic ${auth}`
             })
           });
-
           const response = await stream.json();
+          console.log(response.user._id);
+
           if (stream.status === 200) {
             Toast.show('Logged in successfully', {
               duration: Toast.durations.LONG,
@@ -34,7 +37,10 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => {
               animation: true,
               delay: 0,
             });
+
             dispatch(setToken(response.token));
+            dispatch(setUserId(response.user._id))
+            
             const isAdmin = response.user.role === "admin"
             if (isAdmin) navigation.navigate('Admin')
             else navigation.navigate('Intern');
