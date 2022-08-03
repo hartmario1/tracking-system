@@ -62,6 +62,7 @@ const RootNavigator = () => {
           headerStyle: {
             backgroundColor: '#fff',
           },
+          headerBackVisible: false,
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <MaterialIcons name="arrow-back" size={24} color="black" />
@@ -83,6 +84,7 @@ const RootNavigator = () => {
           headerStyle: {
             backgroundColor: '#fff',
           },
+          headerBackVisible: false,
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.navigate('Admin')}>
               <MaterialIcons name="arrow-back" size={24} color="black" />
@@ -142,6 +144,7 @@ const RootNavigator = () => {
               color: '#000',
               fontFamily: 'poppins'
             },
+            headerBackVisible: false,
             headerLeft: () => (
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <MaterialIcons name="arrow-back" size={24} color="black" />
@@ -161,6 +164,7 @@ const RootNavigator = () => {
               color: '#000',
               fontFamily: 'poppins'
             },
+            headerBackVisible: false,
             headerLeft: () => (
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <MaterialIcons name="arrow-back" size={24} color="black" />

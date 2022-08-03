@@ -27,7 +27,6 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => {
             })
           });
           const response = await stream.json();
-          console.log(response.user._id);
 
           if (stream.status === 200) {
             Toast.show('Logged in successfully', {

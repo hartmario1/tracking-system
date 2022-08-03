@@ -6,6 +6,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { requestHeaders } from "../api/headers";
 import { store } from "../store";
+import { useState } from "react";
 
 const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
   const id = store.getState();
@@ -103,7 +104,8 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
           </View>
 
           <View style = {styles.timeRow}>
-            <View style = {{ width: '48%' }}>
+
+            {/* <View style = {{ width: '48%' }}>
               <Text style = {styles.descriptionText}>
                 Started at
               </Text>
@@ -122,7 +124,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
                   </Text>
                 )
                 : null}
-            </View>
+            </View> */}
             <View style = {{ width: '48%' }}>
               <Text style = {styles.descriptionText}>
                 Ended at
