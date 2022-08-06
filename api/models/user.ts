@@ -1,4 +1,4 @@
-import { Task } from "./task";
+import { TaskModel } from "./task";
 
 export interface User {
   _id: string;
@@ -10,7 +10,7 @@ export interface User {
   firstName: string;
   lastName: string;
   deleted: boolean;
-  tasks: Task
+  tasks: TaskModel
 }
 
 export enum Role {

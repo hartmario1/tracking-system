@@ -6,13 +6,12 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { requestHeaders } from "../api/headers";
 import { store } from "../store";
-import { useState } from "react";
 
 const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
   const id = store.getState();
 
   return (
-    <Formik initialValues={{ title: '', description: '', started: '', ended: '' }}
+    <Formik initialValues={{ title: '', description: '', started: '', ended: '', date: '' }}
       onSubmit = {async values => {
         try {
           const data = await fetch('https://tracksystem.herokuapp.com/tasks', {
@@ -23,7 +22,8 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
               title: values.title,
               description: values.description,
               startDate: values.started,
-              endDate: values.ended
+              endDate: values.ended,
+              taskDate: new Date(values.date)
             })
           });
 
@@ -37,26 +37,25 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
             });
 
             navigation.goBack();
-          } else {
-            Toast.show('Something went wrong, please try again!', {
-              duration: Toast.durations.LONG,
-              position: -100,
-              shadow: true,
-              animation: true,
-              delay: 0,
-            });
-          }
-
+          };          
           return data;
         } catch (error) {
+          Toast.show('Something went wrong, please try again!', {
+            duration: Toast.durations.LONG,
+            position: -100,
+            shadow: true,
+            animation: true,
+            delay: 0,
+          });
           console.error(error);
         }
-
       }}
       validationSchema = {Yup.object().shape({
         title: Yup.string().required('This field is required!'),
+        description: Yup.string().required('This field is required!'),
         started: Yup.string().required('This field is required!'),
-        ended: Yup.string().required('This field is required!')
+        ended: Yup.string().required('This field is required!'),
+        date: Yup.date().required('This field is required')
       })}>
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
         <SafeAreaView style = {styles.container}>
@@ -104,8 +103,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
           </View>
 
           <View style = {styles.timeRow}>
-
-            {/* <View style = {{ width: '48%' }}>
+            <View style = {{ width: '48%' }}>
               <Text style = {styles.descriptionText}>
                 Started at
               </Text>
@@ -115,7 +113,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
                 onBlur = {handleBlur('started')}
                 value = {values.started}
                 blurOnSubmit
-                placeholder="Enter start time"
+                placeholder="HH:MM"
                 keyboardType="numeric" />
                 {errors.started && touched.started
                 ? (
@@ -124,7 +122,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
                   </Text>
                 )
                 : null}
-            </View> */}
+            </View>
             <View style = {{ width: '48%' }}>
               <Text style = {styles.descriptionText}>
                 Ended at
@@ -135,7 +133,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
               onBlur = {handleBlur('ended')}
               value = {values.ended}
               blurOnSubmit
-              placeholder="Enter end time"
+              placeholder="HH:MM"
               keyboardType="numeric" />
               {errors.ended && touched.ended
                 ? (
@@ -145,6 +143,26 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
                 )
                 : null}
             </View>
+          </View>
+
+          <View style = {{ width: '95%', paddingBottom: 10 }}>
+            <Text style = {styles.descriptionText}>
+              Date
+            </Text>
+            <TextInput
+              style={styles.commitInput}
+              blurOnSubmit
+              onChangeText={handleChange('date')}
+              onBlur = {handleBlur('date')}
+              value={values.date}
+              placeholder="MM/DD/YYYY" />
+              {errors.date && touched.date
+                ? (
+                  <Text style = {styles.errorMessage}>
+                    {errors.date}
+                  </Text>
+                )
+                : null}
           </View>
 
           <View style = {{ width: '95%', paddingTop: 20 }}>

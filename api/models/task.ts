@@ -1,7 +1,8 @@
-export interface Task {
+export interface TaskModel {
   userId: string;
+  title: string;
   description: string;
-  startDate: number;
-  endDate: number;
-  date: Date;
+  startDate: string;
+  endDate: string;
+  taskDate: string;
 }

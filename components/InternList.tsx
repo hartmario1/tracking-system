@@ -3,21 +3,23 @@ import { ActivityIndicator, FlatList, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
 import Tasks from "./Task";
 import { requestHeaders } from "../api/headers";
-import { Task } from "../api/models/task";
+import { TaskModel } from "../api/models/task";
+import { store } from "../store";
 
 const List = () => {
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState<Task[]>();
+  const [data, setData] = useState<TaskModel[]>();
+  const id = store.getState();
 
   const getTasks = async () => {
     try {
-      const response = await fetch('https://tracksystem.herokuapp.com/tasks', {
+      const response = await fetch(`https://tracksystem.herokuapp.com/tasks?userId=${encodeURIComponent(id.userId.userId!)}`, {
         method: 'get',
         headers: requestHeaders()
       });
 
       const json = await response.json();
-      const tasks = json as Task[];
+      const tasks = json as TaskModel[];
       setData(tasks);
     } catch (error) {
       console.error(error);
@@ -30,9 +32,8 @@ const List = () => {
     getTasks();
   }, []);
 
-  // change with relevant data from api
   const renderItem = ({ item }: { item: any }) => (
-    <Tasks title = {item.title} start = {item.releaseYear} end = {item.releaseYear} day = {item.releaseYear} month = {item.releaseYear} year = {item.releaseYear} />
+    <Tasks title = {item.title} start = {item.startDate} end = {item.endDate} date = {item.taskDate} description = {item.description} />
   );
 
   return (

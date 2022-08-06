@@ -43,19 +43,17 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => {
             const isAdmin = response.user.role === "admin"
             if (isAdmin) navigation.navigate('Admin')
             else navigation.navigate('Intern');
-
-          } else {
-            Toast.show('Something went wrong, try again!', {
-              duration: Toast.durations.LONG,
-              position: -100,
-              shadow: true,
-              animation: true,
-              delay: 0,
-            });
           }
           
           return Promise.resolve(response);
         } catch (error) {
+          Toast.show('Something went wrong, try again!', {
+            duration: Toast.durations.LONG,
+            position: -100,
+            shadow: true,
+            animation: true,
+            delay: 0,
+          });
           return Promise.reject(error)
         }
       }}

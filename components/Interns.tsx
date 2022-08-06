@@ -5,6 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons'; 
 import { useState } from "react";
 import Toast from "react-native-root-toast";
+import { requestHeaders } from "../api/headers";
 
 const Interns = ({ user }: { user: User }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -34,7 +35,8 @@ const Interns = ({ user }: { user: User }) => {
         </View>
 
         <View style = {{ flexDirection: 'row', width: '100%' }}>
-          <TouchableOpacity style = {styles.showButton}>
+          <TouchableOpacity
+            style = {styles.showButton}>
             <AntDesign name="eyeo" size={18} color="#fff" />
             <Text style = {{ color: '#fff', fontWeight: 'bold', paddingLeft: 4 }}>
               Show Entries
@@ -49,15 +51,31 @@ const Interns = ({ user }: { user: User }) => {
                 <Text style={styles.modalText}>Are you sure you want to delete this user?</Text>
                 <TouchableOpacity
                   style={styles.buttonClose}
-                  onPress={() => {
-                    setModalVisible(!modalVisible)
-                    Toast.show('User successfully deleted', {
-                      duration: Toast.durations.LONG,
-                      position: -100,
-                      shadow: true,
-                      animation: true,
-                      delay: 0
-                    })
+                  onPress={async() => {
+                    try {
+                      await fetch(`https://tracksystem.herokuapp.com/users?_id=${encodeURIComponent(user._id)}`, {
+                        method: 'delete',
+                        headers: requestHeaders()
+                      })
+  
+                      setModalVisible(!modalVisible);
+                      Toast.show('User successfully deleted', {
+                        duration: Toast.durations.LONG,
+                        position: -100,
+                        shadow: true,
+                        animation: true,
+                        delay: 0
+                      });
+                    } catch(e) {
+                      Toast.show('Something went wrong, please try again!', {
+                        duration: Toast.durations.LONG,
+                        position: -100,
+                        shadow: true,
+                        animation: true,
+                        delay: 0
+                      })
+                      console.log(e);
+                    }
                   }}>
                   <View style = {{ flexDirection: 'row', alignItems: 'center' }}>
                     <Feather name="trash-2" size={18} color="#fff" />

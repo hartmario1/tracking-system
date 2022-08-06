@@ -1,33 +1,43 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Feather } from '@expo/vector-icons';
 
-const Task = ({ title, start, end, day: day, month: month, year: year }: { title: string, start: number, end: number, day: string, month: string, year: string }) => (
-  <View style = {styles.item}>
-    <View>
-      <View style = {{ flexDirection: "row" }}>
-        <Text style = {styles.title}>Started at: </Text>
-        <Text style = {styles.date}>{start}</Text>
-        <Text style = {styles.title}> | Ended at: </Text>
-        <Text style = {styles.date}>{end}</Text>
-      </View>
-      <View style = {{ flexDirection: "row" }}>
-        <Text style = {styles.date}>{day}/</Text>
-        <Text style = {styles.date}>{month}/</Text>
-        <Text style = {styles.date}>{year}: </Text>
-        <Text style = {styles.title}>{title}</Text>
-      </View>
-    </View>
+const Task = ({ title, start, end, date, description }: { title: string, start: string, end: string, date: string, description: string }) => {
+  const formattedDate = new Date(date);
 
-    <View style = {styles.icons}>
-      <TouchableOpacity>
-        <Feather name="edit-2" size={19} color="#5371ff" />
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Feather name="trash-2" size={19} color="#B80600" />
-      </TouchableOpacity>
+  return(
+    <View style = {styles.item}>
+      <View>
+        <View style = {{ flexDirection: "row" }}>
+          <Text style = {styles.title}>Title: </Text>
+          <Text style = {styles.date}>{title}</Text>
+        </View>
+        <View style = {{ flexDirection: "row" }}>
+          <Text style = {styles.title}>Started at: </Text>
+          <Text style = {styles.date}>{start}</Text>
+          <Text style = {styles.title}> | Ended at: </Text>
+          <Text style = {styles.date}>{end}</Text>
+        </View>
+        <View style = {{ flexDirection: "row" }}>
+          <Text style = {styles.title}>Date: </Text>
+          <Text style = {styles.date}>{`${formattedDate.getDate()}/${formattedDate.getMonth() + 1}/${formattedDate.getFullYear()}`}</Text>
+        </View>
+        <View style = {{ flexDirection: "row" }}>
+          <Text style = {styles.title}>Description: </Text>
+          <Text style = {styles.date}>{description}</Text>
+        </View>
+      </View>
+
+      <View style = {styles.icons}>
+        <TouchableOpacity>
+          <Feather name="edit-2" size={19} color="#5371ff" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Feather name="trash-2" size={19} color="#B80600" />
+        </TouchableOpacity>
+      </View>
     </View>
-  </View>
-)
+  )
+}
 
 const styles = StyleSheet.create({
   item: {
