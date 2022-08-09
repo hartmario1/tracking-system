@@ -5,12 +5,13 @@ import Toast from 'react-native-root-toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { requestHeaders } from "../api/headers";
+import { serverUrl } from '../utils/utils.core';
 
 const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
   <Formik initialValues={{ username: '', email: '', password: '', phone: '', first_name: '', last_name: '' }}
       onSubmit = {async values => {
         try {
-          const data = await fetch('https://tracksystem.herokuapp.com/users', {
+          const data = await fetch(`${serverUrl}/users`, {
             method: 'post',
             headers: requestHeaders(),
             body: JSON.stringify({

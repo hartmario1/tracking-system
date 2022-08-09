@@ -5,23 +5,33 @@ import useCachedResources from './hooks/useCachedResources';
 import Navigation from './navigation';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { Provider } from 'react-redux';
-import { store } from './store';
+import { awaitRehydrate, persistor, store } from './store';
+import { PersistGate } from 'redux-persist/integration/react'
+import { useEffect, useState } from 'react';
+
 
 const App = () => {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+  const [hydratated, setHydratated] = useState<boolean>();
 
+  useEffect(() => {
+    awaitRehydrate().then(setHydratated)
+  }, []);
+  
   if (!isLoadingComplete) {
     return null
   } else {
     return (
       <Provider store = {store}>
-        <RootSiblingParent>
-          <SafeAreaProvider>
-            <Navigation colorScheme = {colorScheme} />
-            <StatusBar />
-          </SafeAreaProvider>
-        </RootSiblingParent>
+        <PersistGate persistor={persistor} loading={hydratated}>
+          <RootSiblingParent> {hydratated &&
+            (<SafeAreaProvider>
+              <Navigation colorScheme = {colorScheme} />
+              <StatusBar />
+            </SafeAreaProvider> )}
+          </RootSiblingParent>
+        </PersistGate>
       </Provider>
     );
   }

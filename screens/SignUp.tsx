@@ -4,12 +4,13 @@ import { RootTabScreenProps } from "../types";
 import Toast from 'react-native-root-toast';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { serverUrl } from '../utils/utils.core';
 
 const SignUp = ({ navigation }: RootTabScreenProps<'SignUp'>) => (
   <Formik initialValues={{ username: '', email: '', password: '', phone: '', first_name: '', last_name: '' }}
       onSubmit = {async values => {
         try {
-          const data = await fetch('https://tracksystem.herokuapp.com/users', {
+          const data = await fetch(`${serverUrl}/users`, {
             method: 'post',
             headers: new Headers({
               'Content-Type': 'application/json',

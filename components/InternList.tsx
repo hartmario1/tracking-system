@@ -5,6 +5,7 @@ import Tasks from "./Task";
 import { requestHeaders } from "../api/headers";
 import { TaskModel } from "../api/models/task";
 import { store } from "../store";
+import { serverUrl } from '../utils/utils.core';
 
 const List = () => {
   const [isLoading, setLoading] = useState(true);
@@ -13,7 +14,7 @@ const List = () => {
 
   const getTasks = async () => {
     try {
-      const response = await fetch(`https://tracksystem.herokuapp.com/tasks?userId=${encodeURIComponent(id.userId.userId!)}`, {
+      const response = await fetch(`${serverUrl}/tasks?userId=${encodeURIComponent(id.userId.userId!)}`, {
         method: 'get',
         headers: requestHeaders()
       });

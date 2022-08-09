@@ -16,6 +16,7 @@
     "@react-navigation/native-stack": "^6.6.2",
     "@react-navigation/stack": "^6.2.1",
     "@reduxjs/toolkit": "^1.8.3",
+    "@types/redux-persist": "^4.3.1",
     "expo": "~45.0.0",
     "expo-linking": "^3.1.0",
     "expo-splash-screen": "^0.15.1",
@@ -31,6 +32,7 @@
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
     "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {
