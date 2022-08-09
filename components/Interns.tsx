@@ -6,9 +6,11 @@ import { Feather } from '@expo/vector-icons';
 import { useState } from "react";
 import Toast from "react-native-root-toast";
 import { requestHeaders } from "../api/headers";
+import { useNavigation } from "@react-navigation/native";
 
 const Interns = ({ user }: { user: User }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style = {styles.item}>
@@ -36,7 +38,8 @@ const Interns = ({ user }: { user: User }) => {
 
         <View style = {{ flexDirection: 'row', width: '100%' }}>
           <TouchableOpacity
-            style = {styles.showButton}>
+            style = {styles.showButton}
+            onPress = {() => navigation.navigate('InternEntries')}>
             <AntDesign name="eyeo" size={18} color="#fff" />
             <Text style = {{ color: '#fff', fontWeight: 'bold', paddingLeft: 4 }}>
               Show Entries
@@ -53,11 +56,11 @@ const Interns = ({ user }: { user: User }) => {
                   style={styles.buttonClose}
                   onPress={async() => {
                     try {
-                      await fetch(`https://tracksystem.herokuapp.com/users?_id=${encodeURIComponent(user._id)}`, {
-                        method: 'delete',
+                      await fetch(`https://tracksystem.herokuapp.com/users/${encodeURIComponent(user.username)}?deleted=true`, {
+                        method: 'put',
                         headers: requestHeaders()
                       })
-  
+
                       setModalVisible(!modalVisible);
                       Toast.show('User successfully deleted', {
                         duration: Toast.durations.LONG,
@@ -66,22 +69,32 @@ const Interns = ({ user }: { user: User }) => {
                         animation: true,
                         delay: 0
                       });
+
+                      // if (status === not good) {
+                        // Toast.show('Something went wrong, please try again!', {
+                        //   duration: Toast.durations.LONG,
+                        //   position: -100,
+                        //   shadow: true,
+                        //   animation: true,
+                        //   delay: 0
+                      // }
                     } catch(e) {
-                      Toast.show('Something went wrong, please try again!', {
-                        duration: Toast.durations.LONG,
-                        position: -100,
-                        shadow: true,
-                        animation: true,
-                        delay: 0
-                      })
                       console.log(e);
+                      }
                     }
-                  }}>
+                  }>
                   <View style = {{ flexDirection: 'row', alignItems: 'center' }}>
                     <Feather name="trash-2" size={18} color="#fff" />
                     <Text style={styles.textStyle}>Delete</Text>
                   </View>
                 </TouchableOpacity>
+                <View style = {{ paddingTop: 10, width: '100%' }}>
+                  <TouchableOpacity 
+                    style={styles.buttonCancel} 
+                    onPress = {() => setModalVisible(!modalVisible)}>
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </Modal>
@@ -162,6 +175,14 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: "#F34144",
+    borderRadius: 18,
+    padding: 10,
+    elevation: 2,
+    width: '100%',
+    alignItems: 'center'
+  },
+  buttonCancel: {
+    backgroundColor: "#CBCBCB",
     borderRadius: 18,
     padding: 10,
     elevation: 2,

@@ -28,7 +28,12 @@ const linking: LinkingOptions<RootStackParamList> = {
             screens: {
               SignUp: 'fourth'
             }
-          }
+          },
+          InternEntries: {
+            screens: {
+              InternEntries: 'fifth'
+            }
+          },
         },
       },
       NotFound: '*',
