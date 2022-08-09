@@ -6,6 +6,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { requestHeaders } from "../api/headers";
 import { store } from "../store";
+import { serverUrl } from '../utils/utils.core';
 
 const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
   const id = store.getState();
@@ -14,7 +15,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
     <Formik initialValues={{ title: '', description: '', started: '', ended: '', date: '' }}
       onSubmit = {async values => {
         try {
-          const data = await fetch('https://tracksystem.herokuapp.com/tasks', {
+          const data = await fetch(`${serverUrl}/tasks`, {
             method: 'post',
             headers: requestHeaders(),
             body: JSON.stringify({
@@ -37,7 +38,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
             });
 
             navigation.goBack();
-          };          
+          };
           return data;
         } catch (error) {
           Toast.show('Something went wrong, please try again!', {

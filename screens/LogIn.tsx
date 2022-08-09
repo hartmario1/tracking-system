@@ -9,6 +9,7 @@ import Toast from "react-native-root-toast";
 import { setToken } from '../features/tokenSlice';
 import { useDispatch } from 'react-redux';
 import { setUserId } from "../features/userIdSlice";
+import { serverUrl } from '../utils/utils.core';
 
 const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const LogIn = ({ navigation }: RootTabScreenProps<'LogIn'>) => {
         try {
           const encode = (str: string):string => new Buffer(str, 'binary').toString('base64');
           const auth = encode(`${values.username.toLowerCase()}:${values.password}`);
-          const stream = await fetch('https://tracksystem.herokuapp.com/auth', {
+          const stream = await fetch(`${serverUrl}/auth`, {
             method: 'post',
             headers: new Headers({
               'Content-Type': 'application/json',

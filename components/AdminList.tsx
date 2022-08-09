@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { requestHeaders } from "../api/headers";
 import { User } from "../api/models/user";
 import Interns from "./Interns";
+import { serverUrl } from '../utils/utils.core';
 
 const List = () => {
   const [isLoading, setLoading] = useState(true);
@@ -11,7 +12,7 @@ const List = () => {
 
   const getUsers = async () => {
     try {
-      const response = await fetch('https://tracksystem.herokuapp.com/users', {
+      const response = await fetch(`${serverUrl}/users`, {
         method: 'get',
         headers: requestHeaders()
       });

@@ -1,12 +1,16 @@
 import { Modal, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { User } from "../api/models/user";
 
-import { AntDesign } from '@expo/vector-icons'; 
-import { Feather } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { useState } from "react";
 import Toast from "react-native-root-toast";
 import { requestHeaders } from "../api/headers";
+<<<<<<< HEAD
 import { useNavigation } from "@react-navigation/native";
+=======
+import { serverUrl } from '../utils/utils.core';
+>>>>>>> 7e1cf98e8c73a945d9a0979af20c4b0ab643db0d
 
 const Interns = ({ user }: { user: User }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -16,22 +20,22 @@ const Interns = ({ user }: { user: User }) => {
     <SafeAreaView style = {styles.item}>
       <View style = {{ margin: 10, width: '95%' }}>
         <View>
-          <Text style = {styles.title}>Username: 
+          <Text style = {styles.title}>Username:
             <Text style = {styles.date}> {user.username}</Text>
           </Text>
         </View>
         <View>
-          <Text style = {styles.title}>First Name: 
+          <Text style = {styles.title}>First Name:
             <Text style = {styles.date}> {user.firstName}</Text>
           </Text>
         </View>
         <View>
-          <Text style = {styles.title}>Last Name: 
+          <Text style = {styles.title}>Last Name:
             <Text style = {styles.date}> {user.lastName}</Text>
           </Text>
         </View>
         <View style = {{ paddingBottom: 6 }}>
-          <Text style = {styles.title}>Phone Number: 
+          <Text style = {styles.title}>Phone Number:
             <Text style = {styles.date}> {user.phone}</Text>
           </Text>
         </View>
@@ -56,9 +60,16 @@ const Interns = ({ user }: { user: User }) => {
                   style={styles.buttonClose}
                   onPress={async() => {
                     try {
+<<<<<<< HEAD
                       await fetch(`https://tracksystem.herokuapp.com/users/${encodeURIComponent(user.username)}?deleted=true`, {
                         method: 'put',
                         headers: requestHeaders()
+=======
+                      await fetch(`${serverUrl}/users/${encodeURIComponent(user.username)}`, {
+                        method: 'PUT',
+                        headers: requestHeaders(),
+                        body: JSON.stringify({...user, ...{deleted: true}})
+>>>>>>> 7e1cf98e8c73a945d9a0979af20c4b0ab643db0d
                       })
 
                       setModalVisible(!modalVisible);
