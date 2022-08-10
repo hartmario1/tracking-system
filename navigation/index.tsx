@@ -87,7 +87,7 @@ const RootNavigator = () => {
           },
           headerBackVisible: false,
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('Admin')}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <MaterialIcons name="arrow-back" size={24} color="black" />
             </TouchableOpacity>
           )
@@ -146,7 +146,12 @@ const RootNavigator = () => {
           headerStyle: {
             backgroundColor: '#fff',
           },
-          headerBackVisible: false
+          headerBackVisible: false,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <MaterialIcons name="arrow-back" size={24} color="black" />
+            </TouchableOpacity>
+          )
         })} />  
         <Stack.Group screenOptions = {{ presentation: 'containedTransparentModal' }}>
           <Stack.Screen 

@@ -1,8 +1,13 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Feather } from '@expo/vector-icons';
+import { requestHeaders } from "../api/headers";
+import { serverUrl } from "../utils/utils.core";
+import Toast from "react-native-root-toast";
+import { useState } from "react";
 
-const Task = ({ title, start, end, date, description }: { title: string, start: string, end: string, date: string, description: string }) => {
+const Task = ({ _id, title, start, end, date, description }: { _id: string; title: string, start: string, end: string, date: string, description: string }) => {
   const formattedDate = new Date(date);
+  const [modalVisible, setModalVisible] = useState(false);
 
   return(
     <View style = {styles.item}>
@@ -31,7 +36,62 @@ const Task = ({ title, start, end, date, description }: { title: string, start: 
         <TouchableOpacity>
           <Feather name="edit-2" size={19} color="#5371ff" />
         </TouchableOpacity>
-        <TouchableOpacity>
+
+        <Modal
+          animationType = "slide"
+          visible = {modalVisible}
+          onRequestClose={() => setModalVisible(!modalVisible)} >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Are you sure you want to delete this task?</Text>
+              <TouchableOpacity
+                style={styles.buttonClose}
+                onPress={async() => {
+                  try {
+                    await fetch(`${serverUrl}/tasks/${_id}`, {
+                      method: 'delete',
+                      headers: requestHeaders(),
+                    })
+
+                    setModalVisible(!modalVisible);
+                    
+                    Toast.show('Task successfully deleted', {
+                      duration: Toast.durations.LONG,
+                      position: -100,
+                      shadow: true,
+                      animation: true,
+                      delay: 0
+                    });
+
+                    // if (status === not good) {
+                      // Toast.show('Something went wrong, please try again!', {
+                      //   duration: Toast.durations.LONG,
+                      //   position: -100,
+                      //   shadow: true,
+                      //   animation: true,
+                      //   delay: 0
+                    // }
+                  } catch(e) {
+                    console.log(e);
+                    }
+                  }
+                }>
+                <View style = {{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Feather name="trash-2" size={18} color="#fff" />
+                  <Text style={styles.textStyle}>Delete</Text>
+                </View>
+              </TouchableOpacity>
+              <View style = {{ paddingTop: 10, width: '100%' }}>
+                <TouchableOpacity 
+                  style={styles.buttonCancel} 
+                  onPress = {() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.textStyle}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Feather name="trash-2" size={19} color="#B80600" />
         </TouchableOpacity>
       </View>
@@ -59,6 +119,55 @@ const styles = StyleSheet.create({
   icons: {
     flex: 1,
     alignItems: 'flex-end'
+  },
+
+  // modal
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingVertical: 35,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    width: "90%"
+  },
+  buttonClose: {
+    backgroundColor: "#F34144",
+    borderRadius: 18,
+    padding: 10,
+    elevation: 2,
+    width: '100%',
+    alignItems: 'center'
+  },
+  buttonCancel: {
+    backgroundColor: "#CBCBCB",
+    borderRadius: 18,
+    padding: 10,
+    elevation: 2,
+    width: '100%',
+    alignItems: 'center'
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  modalText: {
+    marginBottom: 15,
+    fontSize: 18,
+    textAlign: "center"
   }
 })
 

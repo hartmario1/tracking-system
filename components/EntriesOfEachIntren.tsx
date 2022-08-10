@@ -33,7 +33,7 @@ const List = () => {
   }, []);
 
   const renderItem = ({ item }: { item: any }) => (
-    <Tasks title = {item.title} start = {item.startDate} end = {item.endDate} date = {item.taskDate} description = {item.description} />
+    <Tasks _id={item._id} title = {item.title} start = {item.startDate} end = {item.endDate} date = {item.taskDate} description = {item.description} />
   );
 
   return (
