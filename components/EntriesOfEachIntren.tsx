@@ -13,7 +13,7 @@ const List = () => {
 
   const getTasks = async () => {
     try {
-      const response = await fetch(`https://tracksystem.herokuapp.com/tasks?userId=${encodeURIComponent(id.userId.userId!)}`, {
+      const response = await fetch(`https://tracksystem.herokuapp.com/tasks?userId=${encodeURIComponent(id.internId.internId!)}`, {
         method: 'get',
         headers: requestHeaders()
       });

@@ -29,9 +29,10 @@ const List = () => {
     }
   }
 
+  // currently not working properly (causing a memory leak)
   useEffect(() => {
     getTasks();
-  }, []);
+  }, [data]);
 
   const renderItem = ({ item }: { item: any }) => (
     <Tasks _id = {item._id} title = {item.title} start = {item.startDate} end = {item.endDate} date = {item.taskDate} description = {item.description} />

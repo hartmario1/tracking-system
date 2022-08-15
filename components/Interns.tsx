@@ -8,10 +8,14 @@ import Toast from "react-native-root-toast";
 import { requestHeaders } from "../api/headers";
 import { useNavigation } from "@react-navigation/native";
 import { serverUrl } from '../utils/utils.core';
+import { useDispatch } from "react-redux";
+import { setIntern } from "../features/internSlice";
+import { setInternId } from "../features/internIdSlice";
 
 const Interns = ({ user }: { user: User }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
+  const dispatch = useDispatch()
 
   return (
     <SafeAreaView style = {styles.item}>
@@ -40,7 +44,11 @@ const Interns = ({ user }: { user: User }) => {
         <View style = {{ flexDirection: 'row', width: '100%' }}>
           <TouchableOpacity
             style = {styles.showButton}
-            onPress = {() => navigation.navigate('InternEntries')}>
+            onPress = {() => {
+              dispatch(setIntern(user.username));
+              dispatch(setInternId(user._id));
+              navigation.navigate('InternEntries');
+            }}>
             <AntDesign name="eyeo" size={18} color="#fff" />
             <Text style = {{ color: '#fff', fontWeight: 'bold', paddingLeft: 4 }}>
               Show Entries

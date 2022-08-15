@@ -1,22 +1,27 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import List from "../components/InternList";
+import List from "../components/EntriesOfEachIntren";
+import { store } from "../store";
 
-const InternEntries = () => (
-  <SafeAreaView style = {styles.container}>
-    <StatusBar
-      animated = {true}
-      backgroundColor = '#fff' 
-      style="dark"/>
-    <View style = {{ paddingTop: 6 }}>
-      <Text>
-        USER
-      </Text>
-    </View>
-    <List />
-  </SafeAreaView>
-)
+const InternEntries = () => {
+  const user = store.getState()
+
+  return(
+    <SafeAreaView style = {styles.container}>
+      <StatusBar
+        animated = {true}
+        backgroundColor = '#fff' 
+        style="dark"/>
+      <View style = {{ paddingTop: 6 }}>
+        <Text style = {styles.text}>
+          {user.intern.intern}
+        </Text>
+      </View>
+      <List />
+    </SafeAreaView>
+  )
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -36,6 +41,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 15
+  },
+  text: {
+    fontFamily: 'poppins',
+    fontSize: 18,
+    color: "#5371ff",
   }
 })
 
