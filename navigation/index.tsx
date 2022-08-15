@@ -87,7 +87,7 @@ const RootNavigator = () => {
           },
           headerBackVisible: false,
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.navigate('Root', { screen: 'LogIn' })}>
               <MaterialIcons name="arrow-back" size={24} color="black" />
             </TouchableOpacity>
           )

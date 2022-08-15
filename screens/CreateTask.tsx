@@ -37,7 +37,6 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
               delay: 0,
             });
 
-            navigation.setParams({ makeRequest: true })
             navigation.goBack();
           };
           return data;
