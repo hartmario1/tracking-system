@@ -1,51 +1,41 @@
-import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
 import Tasks from "./Task";
 import { requestHeaders } from "../api/headers";
-import { TaskModel } from "../api/models/task";
 import { store } from "../store";
 import { serverUrl } from '../utils/utils.core';
+import { useQuery } from "react-query";
 
 const List = () => {
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState<TaskModel[]>();
   const id = store.getState();
-
+  
   const getTasks = async () => {
     try {
       const response = await fetch(`${serverUrl}/tasks?userId=${encodeURIComponent(id.userId.userId!)}`, {
         method: 'get',
         headers: requestHeaders()
       });
-
-      const json = await response.json();
-      const tasks = json as TaskModel[];
-      setData(tasks);
+      return response.json();
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   }
-
-  // currently not working properly (causing a memory leak)
-  useEffect(() => {
-    getTasks();
-  }, [data]);
+  
+  const { isLoading, isError, data, error }: any = useQuery('tasks', getTasks);
 
   const renderItem = ({ item }: { item: any }) => (
     <Tasks _id = {item._id} title = {item.title} start = {item.startDate} end = {item.endDate} date = {item.taskDate} description = {item.description} />
   );
 
+  if (isLoading) return <ActivityIndicator color = '#5371ff' size='large' />
+  if (isError) return <div>Error! {error.message}</div> 
+
   return (
     <SafeAreaView style = {styles.container}>
-      {isLoading ? <ActivityIndicator color = '#5371ff' size='large' /> : (
-        <FlatList
-          data = {data}
-          renderItem = {renderItem}
-          keyExtractor = {item => item.userId} />
-      )}
+      <FlatList
+        data = {data}
+        renderItem = {renderItem}
+        keyExtractor = {item => item.userId} />
     </SafeAreaView>
   )
 }

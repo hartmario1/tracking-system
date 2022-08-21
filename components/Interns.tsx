@@ -15,7 +15,7 @@ import { setInternId } from "../features/internIdSlice";
 const Interns = ({ user }: { user: User }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <SafeAreaView style = {styles.item}>

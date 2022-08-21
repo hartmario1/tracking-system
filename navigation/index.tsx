@@ -46,7 +46,8 @@ const RootNavigator = () => {
           headerTitleAlign: 'center',
           headerStyle: {
             backgroundColor: '#fff',
-          }
+          },
+          headerBackVisible: false,
         })} />
       <Stack.Screen 
         name = "SignUp" 
