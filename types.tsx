@@ -13,6 +13,7 @@ export type RootStackParamList = {
   Intern: undefined;
   Admin: undefined;
   CreateTask: undefined;
+  EditTask: undefined;
   CreateUser: undefined;
   NotFound: undefined;
   SignUp: undefined;
@@ -29,6 +30,7 @@ export type RootTabParamList = {
   Intern: undefined;
   Admin: undefined;
   CreateTask: undefined;
+  EditTask: undefined;
   CreateUser: undefined;
   NotFound: undefined;
   SignUp: undefined;

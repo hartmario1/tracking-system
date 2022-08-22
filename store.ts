@@ -6,16 +6,19 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import internSlice from './features/internSlice';
 import internIdSlice from './features/internIdSlice';
+import taskSlice from './features/taskSlice';
 
 const persistConfig = {
 	key: 'root',
 	storage,
 }
+
 const reducer = combineReducers({
 	token: tokenSlice,
 	userId: userIdSlice,
 	intern: internSlice,
-	internId: internIdSlice
+	internId: internIdSlice,
+	task: taskSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

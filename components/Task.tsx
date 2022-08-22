@@ -6,6 +6,7 @@ import Toast from "react-native-root-toast";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { setTask } from "../features/taskSlice";
 
 const Task = ({ _id, title, start, end, date, description }: { _id: string; title: string, start: string, end: string, date: string, description: string }) => {
   const formattedDate = new Date(date);
@@ -38,8 +39,8 @@ const Task = ({ _id, title, start, end, date, description }: { _id: string; titl
 
       <View style = {styles.icons}>
         <TouchableOpacity onPress = {() => {
-          
-          navigation.navigate('CreateTask');
+          dispatch(setTask({ _id, title, start, end, date, description }))
+          navigation.navigate('EditTask');
         }}>
           <Feather name="edit-2" size={19} color="#5371ff" />
         </TouchableOpacity>

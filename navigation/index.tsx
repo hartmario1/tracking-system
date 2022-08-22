@@ -16,6 +16,7 @@ import SignUp from "../screens/SignUp";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import InternEntries from "../screens/InternEntries";
+import EditTask from "../screens/EditTask";
 
 const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
   return (
@@ -175,6 +176,26 @@ const RootNavigator = () => {
                 </TouchableOpacity>
               )
               })} />
+          <Stack.Screen 
+            name = "EditTask"
+            component = {EditTask}
+            options = {({ navigation }: RootTabScreenProps<'EditTask'>) => ({
+              headerTitle: 'Edit entry',
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: '#fff',
+              },
+              headerTitleStyle: {
+                color: '#000',
+                fontFamily: 'poppins'
+              },
+              headerBackVisible: false,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <MaterialIcons name="arrow-back" size={24} color="black" />
+                </TouchableOpacity>
+              )
+              })} />    
           <Stack.Screen 
             name = "CreateUser"
             component = {CreateUser}

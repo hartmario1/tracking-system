@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Entypo } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { RootTabScreenProps } from "../types";
 import Toast from 'react-native-root-toast';
 import { Formik } from 'formik';
@@ -8,14 +8,15 @@ import { requestHeaders } from "../api/headers";
 import { store } from "../store";
 import { serverUrl } from '../utils/utils.core';
 
-const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
+const EditTask = ({ navigation }: RootTabScreenProps<'EditTask'>) => {
   const id = store.getState();
+  const task = store.getState();
 
   return (
     <Formik initialValues={{ title: '', description: '', started: '', ended: '', date: '' }}
       onSubmit = {async values => {
         try {
-          const data = await fetch(`${serverUrl}/tasks`, {
+          const data = await fetch(`${serverUrl}/tasks/${task.task.task}`, {
             method: 'post',
             headers: requestHeaders(),
             body: JSON.stringify({
@@ -29,7 +30,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
           });
 
           if (data.status === 201) {
-            Toast.show('New entry created', {
+            Toast.show('Entry edited successfully', {
               duration: Toast.durations.LONG,
               position: -100,
               shadow: true,
@@ -70,7 +71,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
               onChangeText={handleChange('title')}
               onBlur = {handleBlur('title')}
               value={values.title}
-              placeholder="Write a brief description of what you did" />
+              placeholder="Edit title" />
               {errors.title && touched.title
                 ? (
                   <Text style = {styles.errorMessage}>
@@ -93,7 +94,7 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
               onChangeText={handleChange('description')}
               onBlur = {handleBlur('description')}
               value={values.description}
-              placeholder="Write a brief description of what you did" />
+              placeholder="Edit description" />
               {errors.description && touched.description
                 ? (
                   <Text style = {styles.errorMessage}>
@@ -172,9 +173,9 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
               onPress = {() => {
                   handleSubmit();
                 }}>
-                <Entypo name="plus" size={18} color="#fff" />
+                <Feather name="edit-2" size={17} color="#fff" />
                 <Text style = {styles.addEntryText}>
-                  Create new entry
+                  Edit entry
                 </Text>
             </TouchableOpacity>
           </View>
@@ -233,7 +234,8 @@ const styles = StyleSheet.create({
   addEntryText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 15
+    fontSize: 15,
+    paddingLeft: 3
   },
   errorMessage: {
     color: '#CC002C',
@@ -241,4 +243,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CreateTask;
+export default EditTask;

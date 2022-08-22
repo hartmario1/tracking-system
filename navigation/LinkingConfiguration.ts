@@ -38,7 +38,8 @@ const linking: LinkingOptions<RootStackParamList> = {
       },
       NotFound: '*',
       CreateTask: 'modal1',
-      CreateUser: 'modal2'
+      CreateUser: 'modal2',
+      EditTask: 'modal3'
     },
   },
 };
