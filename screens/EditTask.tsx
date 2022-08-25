@@ -9,18 +9,22 @@ import { store } from "../store";
 import { serverUrl } from '../utils/utils.core';
 
 const EditTask = ({ navigation }: RootTabScreenProps<'EditTask'>) => {
-  const id = store.getState();
-  const task = store.getState();
+  const state = store.getState();
+  const userId = state.userId.userId;
+  const task = state.task.task;
 
   return (
-    <Formik initialValues={{ title: '', description: '', started: '', ended: '', date: '' }}
+    // @ts-ignore
+    <Formik initialValues={{ title: task.title, description: task.description, started: task.start, ended: task.end, date: task.date }}
       onSubmit = {async values => {
         try {
-          const data = await fetch(`${serverUrl}/tasks/${task.task.task}`, {
+          // @ts-ignore
+          const taskId = task._id ?? 0;
+          const data = await fetch(`${serverUrl}/tasks/${taskId}`, {
             method: 'post',
             headers: requestHeaders(),
             body: JSON.stringify({
-              userId: id.userId.userId,
+              userId: userId,
               title: values.title,
               description: values.description,
               startDate: values.started,
