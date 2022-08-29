@@ -21,7 +21,7 @@ const EditTask = ({ navigation }: RootTabScreenProps<'EditTask'>) => {
           // @ts-ignore
           const taskId = task._id ?? 0;
           const data = await fetch(`${serverUrl}/tasks/${taskId}`, {
-            method: 'post',
+            method: 'put',
             headers: requestHeaders(),
             body: JSON.stringify({
               userId: userId,
@@ -33,7 +33,7 @@ const EditTask = ({ navigation }: RootTabScreenProps<'EditTask'>) => {
             })
           });
 
-          if (data.status === 201) {
+          if (data.status === 200) {
             Toast.show('Entry edited successfully', {
               duration: Toast.durations.LONG,
               position: -100,

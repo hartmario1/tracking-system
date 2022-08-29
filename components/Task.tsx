@@ -56,9 +56,18 @@ const Task = ({ _id, title, start, end, date, description }: { _id: string; titl
                 style={styles.buttonClose}
                 onPress={async() => {
                   try {
-                    await fetch(`${serverUrl}/tasks/${_id}`, {
-                      method: 'delete',
+                    const task = {
+                      _id: _id,
+                      title: title, 
+                      startDate: start,
+                      endDate: end, 
+                      taskDate: date,
+                      description: description
+                    }
+                    await fetch(`${serverUrl}/tasks/${encodeURIComponent(_id)}`, {
+                      method: 'PUT',
                       headers: requestHeaders(),
+                      body: JSON.stringify({...task, ...{deleted: true}})
                     })
 
                     setModalVisible(!modalVisible);
