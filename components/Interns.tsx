@@ -7,15 +7,54 @@ import { useState } from "react";
 import Toast from "react-native-root-toast";
 import { requestHeaders } from "../api/headers";
 import { useNavigation } from "@react-navigation/native";
-import { serverUrl } from '../utils/utils.core';
+import { APIError, serverUrl } from '../utils/utils.core';
 import { useDispatch } from "react-redux";
 import { setIntern } from "../features/internSlice";
 import { setInternId } from "../features/internIdSlice";
+import { useMutation, useQueryClient } from "react-query";
 
 const Interns = ({ user }: { user: User }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(async(data: typeof user) => {
+    const response = await fetch(`${serverUrl}/users/${encodeURIComponent(user.username)}`, {
+      method: 'PUT',
+      headers: requestHeaders(),
+      body: JSON.stringify({...data, ...{deleted: true}})
+    });
+    if(!response.ok) {
+      throw new APIError({
+        statusCode: response.status,
+        statusText: response.statusText,
+        message: await response.json().then(d => d.message).catch(() => null)
+      })
+    }
+    return response.json();
+  }, {
+    onSuccess: () => {
+      queryClient.setQueryData(['users'], (data: (typeof user)[]) => data.filter(e => e._id !== user._id));
+      setModalVisible(!modalVisible);
+      Toast.show('User successfully deleted', {
+        duration: Toast.durations.LONG,
+        position: -100,
+        shadow: true,
+        animation: true,
+        delay: 0,
+      });  
+    },
+    onError: () => {
+      Toast.show('Something went wrong, please try again!', {
+        duration: Toast.durations.LONG,
+        position: -100,
+        shadow: true,
+        animation: true,
+        delay: 0,
+      });
+    }
+  })
 
   return (
     <SafeAreaView style = {styles.item}>
@@ -64,33 +103,7 @@ const Interns = ({ user }: { user: User }) => {
                 <TouchableOpacity
                   style={styles.buttonClose}
                   onPress={async() => {
-                    try {
-                      await fetch(`${serverUrl}/users/${encodeURIComponent(user.username)}`, {
-                        method: 'PUT',
-                        headers: requestHeaders(),
-                        body: JSON.stringify({...user, ...{deleted: true}})
-                      })
-
-                      setModalVisible(!modalVisible);
-                      Toast.show('User successfully deleted', {
-                        duration: Toast.durations.LONG,
-                        position: -100,
-                        shadow: true,
-                        animation: true,
-                        delay: 0
-                      });
-
-                      // if (status === not good) {
-                        // Toast.show('Something went wrong, please try again!', {
-                        //   duration: Toast.durations.LONG,
-                        //   position: -100,
-                        //   shadow: true,
-                        //   animation: true,
-                        //   delay: 0
-                      // }
-                    } catch(e) {
-                      console.log(e);
-                      }
+                      mutate(user);
                     }
                   }>
                   <View style = {{ flexDirection: 'row', alignItems: 'center' }}>

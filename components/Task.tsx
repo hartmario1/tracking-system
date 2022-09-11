@@ -1,18 +1,66 @@
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Feather } from '@expo/vector-icons';
 import { requestHeaders } from "../api/headers";
-import { serverUrl } from "../utils/utils.core";
+import { APIError, serverUrl } from "../utils/utils.core";
 import Toast from "react-native-root-toast";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { setTask } from "../features/taskSlice";
+import { useMutation, useQueryClient } from "react-query";
 
 const Task = ({ _id, title, start, end, date, description }: { _id: string; title: string, start: string, end: string, date: string, description: string }) => {
   const formattedDate = new Date(date);
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  
+  const task = {
+    _id: _id,
+    title: title, 
+    startDate: start,
+    endDate: end, 
+    taskDate: date,
+    description: description
+  }
+
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(async(data: typeof task) => {
+    const response = await fetch(`${serverUrl}/tasks/${encodeURIComponent(_id)}`, {
+      method: 'PUT',
+      headers: requestHeaders(),
+      body: JSON.stringify({...data, ...{deleted: true}})
+    });
+    if(!response.ok) {
+      throw new APIError({
+        statusCode: response.status,
+        statusText: response.statusText,
+        message: await response.json().then(d => d.message).catch(() => null)
+      })
+    }
+    return response.json();
+  }, {
+    onSuccess: () => {
+      queryClient.setQueryData(['tasks'], (data: (typeof task)[]) => data.filter(e => e._id !== _id));
+      setModalVisible(!modalVisible);
+      Toast.show('Task successfully deleted', {
+        duration: Toast.durations.LONG,
+        position: -100,
+        shadow: true,
+        animation: true,
+        delay: 0,
+      });  
+    },
+    onError: () => {
+      Toast.show('Something went wrong, please try again!', {
+        duration: Toast.durations.LONG,
+        position: -100,
+        shadow: true,
+        animation: true,
+        delay: 0,
+      });
+    }
+  })
 
   return(
     <View style = {styles.item}>
@@ -54,43 +102,8 @@ const Task = ({ _id, title, start, end, date, description }: { _id: string; titl
               <Text style={styles.modalText}>Are you sure you want to delete this task?</Text>
               <TouchableOpacity
                 style={styles.buttonClose}
-                onPress={async() => {
-                  try {
-                    const task = {
-                      _id: _id,
-                      title: title, 
-                      startDate: start,
-                      endDate: end, 
-                      taskDate: date,
-                      description: description
-                    }
-                    await fetch(`${serverUrl}/tasks/${encodeURIComponent(_id)}`, {
-                      method: 'PUT',
-                      headers: requestHeaders(),
-                      body: JSON.stringify({...task, ...{deleted: true}})
-                    })
-
-                    setModalVisible(!modalVisible);
-                    
-                    Toast.show('Task successfully deleted', {
-                      duration: Toast.durations.LONG,
-                      position: -100,
-                      shadow: true,
-                      animation: true,
-                      delay: 0
-                    });
-
-                    // if (status === not good) {
-                      // Toast.show('Something went wrong, please try again!', {
-                      //   duration: Toast.durations.LONG,
-                      //   position: -100,
-                      //   shadow: true,
-                      //   animation: true,
-                      //   delay: 0
-                    // }
-                  } catch(e) {
-                    console.log(e);
-                    }
+                onPress={() => {
+                    return mutate(task);
                   }
                 }>
                 <View style = {{ flexDirection: 'row', alignItems: 'center' }}>

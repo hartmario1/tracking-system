@@ -6,56 +6,70 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { requestHeaders } from "../api/headers";
 import { serverUrl } from '../utils/utils.core';
+import { useMutation, useQueryClient } from "react-query";
+import { APIError } from '../utils/utils.core';
+import { User } from "../api/models/user";
 
-const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
-  <Formik initialValues={{ username: '', email: '', password: '', phone: '', first_name: '', last_name: '' }}
-      onSubmit = {async values => {
-        try {
-          const data = await fetch(`${serverUrl}/users`, {
-            method: 'post',
-            headers: requestHeaders(),
-            body: JSON.stringify({
-              username: values.username,
-              email: values.email,
-              password: values.password,
-              phone: values.phone,
-              firstName: values.first_name,
-              lastName: values.last_name,
-              role: 'admin'
-            })
-          });
+const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(async(data: Omit<User, "userId" | "_id" | "role" | "tasks" | "deleted">) => {
+    const response = await fetch(`${serverUrl}/users`, {
+      method: 'post',
+      headers: requestHeaders(),
+      body: JSON.stringify({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        phone: data.phone,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        role: 'admin'
+      })
+    });
+    if(!response.ok) {
+      throw new APIError({
+        statusCode: response.status,
+        statusText: response.statusText,
+        message: await response.json().then(d => d.message).catch(() => null)
+      })
+    };
+    return response.json();
+  }, {
+    onSuccess: (user) => {
+      queryClient.setQueryData(['users'], (data: User[]) => data.concat([user]));
+      Toast.show('New user created', {
+        duration: Toast.durations.LONG,
+        position: -100,
+        shadow: true,
+        animation: true,
+        delay: 0,
+      });
+      
+      navigation.goBack();
+    },
+    onError: () => {
+      Toast.show('Something went wrong, please try again!', {
+        duration: Toast.durations.LONG,
+        position: -100,
+        shadow: true,
+        animation: true,
+        delay: 0,
+      })
+    }
+  })
 
-          if (data.status === 201) {
-            Toast.show('New user created', {
-              duration: Toast.durations.LONG,
-              position: -100,
-              shadow: true,
-              animation: true,
-              delay: 0,
-            });
-            
-            navigation.goBack();
-          } else {
-            Toast.show('Something went wrong, please try again!', {
-              duration: Toast.durations.LONG,
-              position: -100,
-              shadow: true,
-              animation: true,
-              delay: 0,
-            });
-          }
-          return data;
-        } catch (error) {
-          console.error(error);
-        };
+  return (
+    <Formik<Omit<User, "userId" | "_id" | "role" | "tasks" | "deleted">> initialValues={{ username: '', email: '', password: '', phone: '', firstName: '', lastName: '' }}
+      onSubmit = {(values: Omit<User, "userId" | "_id" | "role" | "tasks" | "deleted">) => {
+        return mutate(values);
       }}
       validationSchema = {Yup.object().shape({
         username: Yup.string().required('This field is required!'),
         email: Yup.string().required('This field is required!'),
         password: Yup.string().required('This field is required!'),
         phone: Yup.string().required('This field is required!'),
-        first_name: Yup.string().required('This field is required!'),
-        last_name: Yup.string().required('This field is required!')
+        firstName: Yup.string().required('This field is required!'),
+        lastName: Yup.string().required('This field is required!')
       })}>
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
         <SafeAreaView style = {styles.container}>
@@ -147,15 +161,15 @@ const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
               </Text>
               <TextInput
                 style={styles.timeInput}
-                onChangeText = {handleChange('first_name')}
-                onBlur = {handleBlur('first_name')}
-                value = {values.first_name}
+                onChangeText = {handleChange('firstName')}
+                onBlur = {handleBlur('firstName')}
+                value = {values.firstName}
                 blurOnSubmit
                 placeholder="Enter first name" />
-                {errors.first_name && touched.first_name
+                {errors.firstName && touched.firstName
                 ? (
                   <Text style = {styles.errorMessage}>
-                    {errors.first_name}
+                    {errors.firstName}
                   </Text>
                 )
                 : null}
@@ -166,15 +180,15 @@ const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
               </Text>
               <TextInput
               style={styles.timeInput}
-              onChangeText = {handleChange('last_name')}
-              onBlur = {handleBlur('last_name')}
-              value = {values.last_name}
+              onChangeText = {handleChange('lastName')}
+              onBlur = {handleBlur('lastName')}
+              value = {values.lastName}
               blurOnSubmit
               placeholder="Enter last name" />
-              {errors.last_name && touched.last_name
+              {errors.lastName && touched.lastName
                 ? (
                   <Text style = {styles.errorMessage}>
-                    {errors.last_name}
+                    {errors.lastName}
                   </Text>
                 )
                 : null}
@@ -196,7 +210,8 @@ const CreateUser = ({ navigation }: RootTabScreenProps<'CreateUser'>) => (
         </SafeAreaView>
       )}
     </Formik>
-);
+  )
+};
 
 const styles = StyleSheet.create({
   container: {

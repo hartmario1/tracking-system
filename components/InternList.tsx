@@ -21,7 +21,7 @@ const List = () => {
     }
   }
   
-  const { isLoading, isError, data, error }: any = useQuery('tasks', getTasks);
+  const { isLoading, isError, data, error }: any = useQuery(['tasks'], getTasks);
 
   const renderItem = ({ item }: { item: any }) => (
     <Tasks _id = {item._id} title = {item.title} start = {item.startDate} end = {item.endDate} date = {item.taskDate} description = {item.description} />
@@ -35,7 +35,7 @@ const List = () => {
       <FlatList
         data = {data}
         renderItem = {renderItem}
-        keyExtractor = {item => item.userId} />
+        keyExtractor = {item => item._id} />
     </SafeAreaView>
   )
 }

@@ -6,57 +6,70 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { requestHeaders } from "../api/headers";
 import { store } from "../store";
-import { serverUrl } from '../utils/utils.core';
+import { APIError, serverUrl } from '../utils/utils.core';
+import { useMutation, useQueryClient } from "react-query";
+import { TaskModel } from "../api/models/task";
 
 const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
   const id = store.getState();
 
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(async(data: Omit<TaskModel, "userId">) => {
+    const response = await fetch(`${serverUrl}/tasks`, {
+      method: 'post',
+      headers: requestHeaders(),
+      body: JSON.stringify({
+        userId: id.userId.userId,
+        title: data.title,
+        description: data.description,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        taskDate: new Date(data.taskDate)
+      })
+    });
+    if(!response.ok) {
+      throw new APIError({
+        statusCode: response.status,
+        statusText: response.statusText,
+        message: await response.json().then(d => d.message).catch(() => null)
+      })
+    }
+    return response.json();
+  }, {
+    onSuccess: (user) => {
+      console.log(user);
+      queryClient.setQueryData(['tasks'], (data: TaskModel[]) => data.concat([user]));
+      navigation.goBack();
+      Toast.show('New entry created', {
+        duration: Toast.durations.LONG,
+        position: -100,
+        shadow: true,
+        animation: true,
+        delay: 0,
+      });
+    },
+    onError: () => {
+      Toast.show('Something went wrong, please try again!', {
+        duration: Toast.durations.LONG,
+        position: -100,
+        shadow: true,
+        animation: true,
+        delay: 0,
+      });
+    }
+  });
+
   return (
-    <Formik initialValues={{ title: '', description: '', started: '', ended: '', date: '' }}
-      onSubmit = {async values => {
-        try {
-          const data = await fetch(`${serverUrl}/tasks`, {
-            method: 'post',
-            headers: requestHeaders(),
-            body: JSON.stringify({
-              userId: id.userId.userId,
-              title: values.title,
-              description: values.description,
-              startDate: values.started,
-              endDate: values.ended,
-              taskDate: new Date(values.date)
-            })
-          });
-
-          if (data.status === 201) {
-            Toast.show('New entry created', {
-              duration: Toast.durations.LONG,
-              position: -100,
-              shadow: true,
-              animation: true,
-              delay: 0,
-            });
-
-            navigation.goBack();
-          };
-          return data;
-        } catch (error) {
-          Toast.show('Something went wrong, please try again!', {
-            duration: Toast.durations.LONG,
-            position: -100,
-            shadow: true,
-            animation: true,
-            delay: 0,
-          });
-          console.error(error);
-        }
+    <Formik<Omit<TaskModel, "userId">> initialValues={{ title: '', description: '', startDate: '', endDate: '', taskDate: '' }}
+      onSubmit = {values => {
+        return mutate(values);
       }}
       validationSchema = {Yup.object().shape({
         title: Yup.string().required('This field is required!'),
         description: Yup.string().required('This field is required!'),
-        started: Yup.string().required('This field is required!'),
-        ended: Yup.string().required('This field is required!'),
-        date: Yup.date().required('This field is required')
+        startDate: Yup.string().required('This field is required!'),
+        endDate: Yup.string().required('This field is required!'),
+        taskDate: Yup.date().required('This field is required')
       })}>
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
         <SafeAreaView style = {styles.container}>
@@ -110,16 +123,15 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
               </Text>
               <TextInput
                 style={styles.timeInput}
-                onChangeText = {handleChange('started')}
-                onBlur = {handleBlur('started')}
-                value = {values.started}
+                onChangeText = {handleChange('startDate')}
+                onBlur = {handleBlur('startDate')}
+                value = {values.startDate}
                 blurOnSubmit
-                placeholder="HH:MM"
-                keyboardType="numeric" />
-                {errors.started && touched.started
+                placeholder="HH:MM" />
+                {errors.startDate && touched.startDate
                 ? (
                   <Text style = {styles.errorMessage}>
-                    {errors.started}
+                    {errors.startDate}
                   </Text>
                 )
                 : null}
@@ -130,16 +142,15 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
               </Text>
               <TextInput
               style={styles.timeInput}
-              onChangeText = {handleChange('ended')}
-              onBlur = {handleBlur('ended')}
-              value = {values.ended}
+              onChangeText = {handleChange('endDate')}
+              onBlur = {handleBlur('endDate')}
+              value = {values.endDate}
               blurOnSubmit
-              placeholder="HH:MM"
-              keyboardType="numeric" />
-              {errors.ended && touched.ended
+              placeholder="HH:MM" />
+              {errors.endDate && touched.endDate
                 ? (
                   <Text style = {styles.errorMessage}>
-                    {errors.ended}
+                    {errors.endDate}
                   </Text>
                 )
                 : null}
@@ -153,14 +164,14 @@ const CreateTask = ({ navigation }: RootTabScreenProps<'CreateTask'>) => {
             <TextInput
               style={styles.commitInput}
               blurOnSubmit
-              onChangeText={handleChange('date')}
-              onBlur = {handleBlur('date')}
-              value={values.date}
+              onChangeText={handleChange('taskDate')}
+              onBlur = {handleBlur('taskDate')}
+              value={values.taskDate}
               placeholder="MM/DD/YYYY" />
-              {errors.date && touched.date
+              {errors.taskDate && touched.taskDate
                 ? (
                   <Text style = {styles.errorMessage}>
-                    {errors.date}
+                    {errors.taskDate}
                   </Text>
                 )
                 : null}

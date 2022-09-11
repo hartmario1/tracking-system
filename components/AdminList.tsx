@@ -18,7 +18,7 @@ const List = () => {
     }
   }
 
-  const { isLoading, isError, data, error }: any = useQuery('users', getUsers);
+  const { isLoading, isError, data, error }: any = useQuery(['users'], getUsers);
 
   const renderItem = ({ item }: { item: any }) => (
     <Interns user = {item} />
