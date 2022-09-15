@@ -4,8 +4,9 @@ import { requestHeaders } from "../api/headers";
 import Interns from "./Interns";
 import { serverUrl } from '../utils/utils.core';
 import { useQuery } from "react-query";
+import { User } from "../api/models/user";
 
-const List = () => {
+const List = ({ searchPhrase }: { searchPhrase: string }) => {
   const getUsers = async () => {
     try {
       const response = await fetch(`${serverUrl}/users`, {
@@ -20,9 +21,9 @@ const List = () => {
 
   const { isLoading, isError, data, error }: any = useQuery(['users'], getUsers);
 
-  const renderItem = ({ item }: { item: any }) => (
-    <Interns user = {item} />
-  );
+  const renderItem = ({ item }: { item: User }) => {
+    return <Interns user = {item} />
+  };
 
   if (isLoading) return <ActivityIndicator color = '#5371ff' size='large' />
   if (isError) return <div>Error! {error.message}</div> 
@@ -30,7 +31,7 @@ const List = () => {
   return (
     <SafeAreaView style = {styles.container}>
       <FlatList
-        data = {data}
+        data = {data.filter((item: User) => item.username.toLowerCase().includes(searchPhrase.toLocaleLowerCase()))}
         renderItem = {renderItem}
         keyExtractor = {item => item._id} />
     </SafeAreaView>

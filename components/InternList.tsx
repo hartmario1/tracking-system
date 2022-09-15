@@ -6,7 +6,7 @@ import { store } from "../store";
 import { serverUrl } from '../utils/utils.core';
 import { useQuery } from "react-query";
 
-const List = () => {
+const List = ({ searchPhrase }: { searchPhrase: string }) => {
   const id = store.getState();
   
   const getTasks = async () => {
@@ -23,9 +23,9 @@ const List = () => {
   
   const { isLoading, isError, data, error }: any = useQuery(['tasks'], getTasks);
 
-  const renderItem = ({ item }: { item: any }) => (
-    <Tasks _id = {item._id} title = {item.title} start = {item.startDate} end = {item.endDate} date = {item.taskDate} description = {item.description} />
-  );
+  const renderItem = ({ item }: { item: any }) => {
+    return <Tasks _id = {item._id} title = {item.title} start = {item.startDate} end = {item.endDate} date = {item.taskDate} description = {item.description} />
+  };
 
   if (isLoading) return <ActivityIndicator color = '#5371ff' size='large' />
   if (isError) return <div>Error! {error.message}</div> 
@@ -33,7 +33,7 @@ const List = () => {
   return (
     <SafeAreaView style = {styles.container}>
       <FlatList
-        data = {data}
+        data = {data.filter((item: any) => item.title.toLowerCase().includes(searchPhrase.toLocaleLowerCase()))}
         renderItem = {renderItem}
         keyExtractor = {item => item._id} />
     </SafeAreaView>
